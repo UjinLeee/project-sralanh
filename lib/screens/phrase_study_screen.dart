@@ -381,36 +381,6 @@ class _StudyCard extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              'KHMER',
-                              style: GoogleFonts.beVietnamPro(
-                                fontSize: 11,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 2,
-                                color: AppColors.primary.withValues(alpha: 0.5),
-                              ),
-                            ),
-                            const SizedBox(height: 16),
-                            Text(
-                              phrase.khmer,
-                              textAlign: TextAlign.center,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: khmerTextStyle(
-                                context: context,
-                                fontSize: 30,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.onSurface.withValues(alpha: 0.9),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        flex: 9,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
                               'KOREAN',
                               style: GoogleFonts.beVietnamPro(
                                 fontSize: 11,
@@ -478,6 +448,36 @@ class _StudyCard extends StatelessWidget {
                                     ),
                                   ),
                                 ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        flex: 9,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'KHMER',
+                              style: GoogleFonts.beVietnamPro(
+                                fontSize: 11,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 2,
+                                color: AppColors.primary.withValues(alpha: 0.5),
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              phrase.khmer,
+                              textAlign: TextAlign.center,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: khmerTextStyle(
+                                context: context,
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.onSurface.withValues(alpha: 0.9),
                               ),
                             ),
                           ],
