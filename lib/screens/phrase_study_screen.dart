@@ -373,70 +373,89 @@ class _StudyCard extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(top: 8),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Text(
-                        'KHMER',
-                        style: GoogleFonts.beVietnamPro(
-                          fontSize: 11,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 2,
-                          color: AppColors.primary.withValues(alpha: 0.5),
+                      Expanded(
+                        flex: 11,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'KHMER',
+                              style: GoogleFonts.beVietnamPro(
+                                fontSize: 11,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 2,
+                                color: AppColors.primary.withValues(alpha: 0.5),
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              phrase.khmer,
+                              textAlign: TextAlign.center,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: khmerTextStyle(
+                                context: context,
+                                fontSize: 48,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.onSurface,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        flex: 9,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'KOREAN',
+                              style: GoogleFonts.beVietnamPro(
+                                fontSize: 11,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 2,
+                                color: AppColors.secondary.withValues(alpha: 0.5),
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              phrase.korean,
+                              textAlign: TextAlign.center,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: GoogleFonts.plusJakartaSans(
+                                fontSize: 36,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.onSurface,
+                                height: 1.2,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 6,
+                              ),
+                              decoration: BoxDecoration(
+                                color: AppColors.surfaceContainer,
+                                borderRadius: BorderRadius.circular(999),
+                              ),
+                              child: Text(
+                                '[ ${phrase.pronunciation} ]',
+                                style: GoogleFonts.beVietnamPro(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w500,
+                                  color: AppColors.onSurfaceVariant,
+                                  letterSpacing: 0.5,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       const SizedBox(height: 16),
-                      Text(
-                        phrase.khmer,
-                        textAlign: TextAlign.center,
-                        style: khmerTextStyle(
-                          context: context,
-                          fontSize: 48,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.onSurface,
-                        ),
-                      ),
-                      const Spacer(),
-                      Text(
-                        'KOREAN',
-                        style: GoogleFonts.beVietnamPro(
-                          fontSize: 11,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 2,
-                          color: AppColors.secondary.withValues(alpha: 0.5),
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      Text(
-                        phrase.korean,
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.plusJakartaSans(
-                          fontSize: 36,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.onSurface,
-                          height: 1.2,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 6,
-                        ),
-                        decoration: BoxDecoration(
-                          color: AppColors.surfaceContainer,
-                          borderRadius: BorderRadius.circular(999),
-                        ),
-                        child: Text(
-                          '[ ${phrase.pronunciation} ]',
-                          style: GoogleFonts.beVietnamPro(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.onSurfaceVariant,
-                            letterSpacing: 0.5,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 32),
                     ],
                   ),
                 ),
