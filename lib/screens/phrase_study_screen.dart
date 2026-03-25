@@ -1,9 +1,60 @@
+import 'dart:math' as math;
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:project_sralanh/models/phrase.dart';
 import 'package:project_sralanh/theme/app_theme.dart';
+
+/// Layout helpers: spacing/fonts scale with the shortest logical side; card
+/// height is capped using viewport so 4:5 cards do not blow past small screens.
+class _StudyResponsive {
+  _StudyResponsive(this.context);
+
+  final BuildContext context;
+
+  MediaQueryData get _mq => MediaQuery.of(context);
+
+  double get _w => _mq.size.width;
+
+  double get _h => _mq.size.height;
+
+  double get _short => math.min(_w, _h);
+
+  /// Base scale (~400dp shortest side → 1.0).
+  double get scale => (_short / 400).clamp(0.78, 1.22);
+
+  double sp(double logical) => logical * scale;
+
+  double horizontalPadding() => (_w * 0.05).clamp(12, 26);
+
+  double contentMaxWidth() => math.min(512, _w * 0.94);
+
+  double bodyTopPadding(double topInset) => topInset + sp(70);
+
+  double scrollBottomPadding(double bottomInset) =>
+      math.max(sp(96), _h * 0.13) + bottomInset;
+
+  double gapAfterProgress() => sp(32);
+
+  double gapBeforeChips() => sp(48);
+
+  /// Prefer 4:5 by width, but never exceed available vertical space under chrome.
+  double studyCardHeight(double cardWidth) {
+    final pad = _mq.padding;
+    final usableH = _h - pad.vertical;
+    final chrome = usableH * 0.36;
+    final maxByViewport = math.max(sp(210), usableH - chrome);
+    final byAspect = cardWidth * 5 / 4;
+    return math
+        .min(byAspect, maxByViewport)
+        .clamp(sp(200), math.min(sp(560), maxByViewport));
+  }
+
+  /// Fine-tune typography inside the card when it is shorter than design baseline.
+  double studyCardInnerScale(double cardHeight) =>
+      (cardHeight / 380).clamp(0.68, 1.05);
+}
 
 class PhraseStudyArgs {
   const PhraseStudyArgs({
@@ -90,6 +141,7 @@ class _PhraseStudyScreenState extends State<PhraseStudyScreen> {
     final total = phrases.length;
     final current = _index + 1;
     final progress = current / total;
+    final r = _StudyResponsive(context);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -98,14 +150,14 @@ class _PhraseStudyScreenState extends State<PhraseStudyScreen> {
           Positioned.fill(
             child: SingleChildScrollView(
               padding: EdgeInsets.fromLTRB(
-                24,
-                topInset + 80,
-                24,
-                140 + bottomInset,
+                r.horizontalPadding(),
+                r.bodyTopPadding(topInset),
+                r.horizontalPadding(),
+                r.scrollBottomPadding(bottomInset),
               ),
               child: Center(
                 child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 512),
+                  constraints: BoxConstraints(maxWidth: r.contentMaxWidth()),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
@@ -115,12 +167,12 @@ class _PhraseStudyScreenState extends State<PhraseStudyScreen> {
                         total: total,
                         progress: progress,
                       ),
-                      const SizedBox(height: 48),
+                      SizedBox(height: r.gapAfterProgress()),
                       _StudyCard(
                         phrase: phrase,
                         onPlayAudio: () {},
                       ),
-                      const SizedBox(height: 80),
+                      SizedBox(height: r.gapBeforeChips()),
                       _HintChips(category: phrase.category),
                     ],
                   ),
@@ -171,6 +223,11 @@ class _StudyTopBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final r = _StudyResponsive(context);
+    final barH = r.sp(52).clamp(48.0, 58.0);
+    final hPad = r.horizontalPadding();
+    final avatar = r.sp(38).clamp(32.0, 44.0);
+
     return ClipRect(
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
@@ -185,9 +242,9 @@ class _StudyTopBar extends StatelessWidget {
             ),
           ),
           child: SizedBox(
-            height: 56,
+            height: barH,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
+              padding: EdgeInsets.symmetric(horizontal: hPad),
               child: Row(
                 children: [
                   IconButton(
@@ -204,7 +261,7 @@ class _StudyTopBar extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: GoogleFonts.plusJakartaSans(
-                        fontSize: 18,
+                        fontSize: (16 * r.scale).clamp(14.0, 19.0),
                         fontWeight: FontWeight.bold,
                         color: AppColors.onSurface,
                         letterSpacing: -0.25,
@@ -212,8 +269,8 @@ class _StudyTopBar extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    width: 40,
-                    height: 40,
+                    width: avatar,
+                    height: avatar,
                     child: ClipOval(
                       child: Image.network(
                         profileImageUrl,
@@ -253,18 +310,22 @@ class _ProgressHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final r = _StudyResponsive(context);
+    final labelFs = (10 * r.scale).clamp(9.0, 12.0);
+    final barH = r.sp(14).clamp(12.0, 18.0);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
+          padding: EdgeInsets.symmetric(horizontal: r.sp(6)),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 lessonLabel.toUpperCase(),
                 style: GoogleFonts.plusJakartaSans(
-                  fontSize: 11,
+                  fontSize: labelFs,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 2,
                   color: AppColors.primary,
@@ -273,7 +334,7 @@ class _ProgressHeader extends StatelessWidget {
               Text(
                 '$current / $total',
                 style: GoogleFonts.plusJakartaSans(
-                  fontSize: 11,
+                  fontSize: labelFs,
                   fontWeight: FontWeight.bold,
                   color: AppColors.primary,
                 ),
@@ -281,11 +342,11 @@ class _ProgressHeader extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: 12),
+        SizedBox(height: r.sp(10)),
         ClipRRect(
           borderRadius: BorderRadius.circular(999),
           child: SizedBox(
-            height: 16,
+            height: barH,
             child: Stack(
               fit: StackFit.expand,
               children: [
@@ -327,124 +388,188 @@ class _StudyCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final r = _StudyResponsive(context);
     final icon = categoryIcon(phrase.category);
 
-    return Stack(
-      clipBehavior: Clip.none,
-      alignment: Alignment.bottomCenter,
-      children: [
-        AspectRatio(
-          aspectRatio: 4 / 5,
-          child: Container(
-            padding: const EdgeInsets.all(32),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(24),
-              border: Border.all(
-                color: AppColors.outlineVariant.withValues(alpha: 0.12),
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: const Color(0xFF071E27).withValues(alpha: 0.04),
-                  blurRadius: 40,
-                  offset: const Offset(0, 20),
-                ),
-              ],
-            ),
-            child: Stack(
-              children: [
-                Positioned(
-                  top: 0,
-                  left: 0,
-                  child: Container(
-                    width: 48,
-                    height: 48,
-                    decoration: BoxDecoration(
-                      color: AppColors.secondaryContainer,
-                      shape: BoxShape.circle,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final cardW = constraints.maxWidth;
+        final cardH = r.studyCardHeight(cardW);
+        final s = r.studyCardInnerScale(cardH);
+        final pad = math.max(12.0, cardW * 0.06);
+        final fabNudge = r.sp(28) * s;
+        final iconD = r.sp(44) * s;
+        final labelFs = (11 * s).clamp(9.0, 12.0);
+        final koreanFs = (28 * s).clamp(20.0, 32.0);
+        final khmerFs = (30 * s).clamp(22.0, 34.0);
+        final pronCaptionFs = (10 * s).clamp(8.5, 11.0);
+        final pronBodyFs = (24 * s).clamp(17.0, 28.0);
+        final gapMd = r.sp(14) * s;
+        final gapSm = r.sp(10) * s;
+        final corner = (22 * s).clamp(16.0, 26.0);
+        final pronMinW = cardW * 0.55;
+
+        return SizedBox(
+          height: cardH,
+          width: cardW,
+          child: Stack(
+            clipBehavior: Clip.none,
+            alignment: Alignment.bottomCenter,
+            children: [
+              Positioned.fill(
+                child: Container(
+                  padding: EdgeInsets.all(pad),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(corner),
+                    border: Border.all(
+                      color: AppColors.outlineVariant.withValues(alpha: 0.12),
                     ),
-                    child: Icon(
-                      icon,
-                      color: AppColors.onSecondaryContainer,
-                      size: 26,
-                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(0xFF071E27).withValues(alpha: 0.04),
+                        blurRadius: r.sp(32),
+                        offset: Offset(0, r.sp(16)),
+                      ),
+                    ],
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 8),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                  child: Stack(
                     children: [
-                      Expanded(
-                        flex: 11,
+                      Positioned(
+                        top: 0,
+                        left: 0,
+                        child: Container(
+                          width: iconD,
+                          height: iconD,
+                          decoration: BoxDecoration(
+                            color: AppColors.secondaryContainer,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            icon,
+                            color: AppColors.onSecondaryContainer,
+                            size: iconD * 0.52,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: gapSm),
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            Text(
-                              'KOREAN',
-                              style: GoogleFonts.beVietnamPro(
-                                fontSize: 11,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 2,
-                                color: AppColors.secondary.withValues(alpha: 0.5),
-                              ),
-                            ),
-                            const SizedBox(height: 16),
-                            Text(
-                              phrase.korean,
-                              textAlign: TextAlign.center,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: GoogleFonts.plusJakartaSans(
-                                fontSize: 28,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.onSurface,
-                                height: 1.2,
-                              ),
-                            ),
-                            const SizedBox(height: 14),
-                            Container(
-                              constraints: const BoxConstraints(minWidth: 220),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 20,
-                                vertical: 10,
-                              ),
-                              decoration: BoxDecoration(
-                                color: AppColors.secondaryContainer,
-                                borderRadius: BorderRadius.circular(18),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: AppColors.onSecondaryContainer
-                                        .withValues(alpha: 0.12),
-                                    blurRadius: 8,
-                                    offset: const Offset(0, 4),
-                                  ),
-                                ],
-                              ),
+                            Expanded(
+                              flex: 11,
                               child: Column(
-                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    'PRONUNCIATION',
+                                    'KOREAN',
                                     style: GoogleFonts.beVietnamPro(
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w600,
-                                      letterSpacing: 1.8,
-                                      color: AppColors.onSecondaryContainer
-                                          .withValues(alpha: 0.72),
+                                      fontSize: labelFs,
+                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: 2,
+                                      color: AppColors.secondary
+                                          .withValues(alpha: 0.5),
                                     ),
                                   ),
-                                  const SizedBox(height: 4),
+                                  SizedBox(height: gapMd),
                                   Text(
-                                    '[ ${phrase.pronunciation} ]',
+                                    phrase.korean,
                                     textAlign: TextAlign.center,
-                                    maxLines: 1,
+                                    maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
+                                    style: GoogleFonts.plusJakartaSans(
+                                      fontSize: koreanFs,
+                                      fontWeight: FontWeight.bold,
+                                      color: AppColors.onSurface,
+                                      height: 1.2,
+                                    ),
+                                  ),
+                                  SizedBox(height: gapSm * 1.2),
+                                  Container(
+                                    constraints: BoxConstraints(
+                                      minWidth: pronMinW,
+                                    ),
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: r.sp(18) * s,
+                                      vertical: r.sp(9) * s,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.secondaryContainer,
+                                      borderRadius: BorderRadius.circular(
+                                        (16 * s).clamp(12.0, 20.0),
+                                      ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: AppColors
+                                              .onSecondaryContainer
+                                              .withValues(alpha: 0.12),
+                                          blurRadius: r.sp(8),
+                                          offset: Offset(0, r.sp(3)),
+                                        ),
+                                      ],
+                                    ),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(
+                                          'PRONUNCIATION',
+                                          style: GoogleFonts.beVietnamPro(
+                                            fontSize: pronCaptionFs,
+                                            fontWeight: FontWeight.w600,
+                                            letterSpacing: 1.6,
+                                            color: AppColors
+                                                .onSecondaryContainer
+                                                .withValues(alpha: 0.72),
+                                          ),
+                                        ),
+                                        SizedBox(height: r.sp(3)),
+                                        Text(
+                                          '[ ${phrase.pronunciation} ]',
+                                          textAlign: TextAlign.center,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: GoogleFonts.beVietnamPro(
+                                            fontSize: pronBodyFs,
+                                            fontWeight: FontWeight.w800,
+                                            color:
+                                                AppColors.onSecondaryContainer,
+                                            letterSpacing: 0.4,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Expanded(
+                              flex: 9,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'KHMER',
                                     style: GoogleFonts.beVietnamPro(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.w800,
-                                      color: AppColors.onSecondaryContainer,
-                                      letterSpacing: 0.4,
+                                      fontSize: labelFs,
+                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: 2,
+                                      color: AppColors.primary
+                                          .withValues(alpha: 0.5),
+                                    ),
+                                  ),
+                                  SizedBox(height: gapMd),
+                                  Text(
+                                    phrase.khmer,
+                                    textAlign: TextAlign.center,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: khmerTextStyle(
+                                      context: context,
+                                      fontSize: khmerFs,
+                                      fontWeight: FontWeight.bold,
+                                      color: AppColors.onSurface
+                                          .withValues(alpha: 0.9),
                                     ),
                                   ),
                                 ],
@@ -453,66 +578,35 @@ class _StudyCard extends StatelessWidget {
                           ],
                         ),
                       ),
-                      Expanded(
-                        flex: 9,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'KHMER',
-                              style: GoogleFonts.beVietnamPro(
-                                fontSize: 11,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 2,
-                                color: AppColors.primary.withValues(alpha: 0.5),
-                              ),
-                            ),
-                            const SizedBox(height: 16),
-                            Text(
-                              phrase.khmer,
-                              textAlign: TextAlign.center,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: khmerTextStyle(
-                                context: context,
-                                fontSize: 30,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.onSurface.withValues(alpha: 0.9),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 16),
                     ],
                   ),
                 ),
-              ],
-            ),
-          ),
-        ),
-        Transform.translate(
-          offset: const Offset(0, 32),
-          child: Material(
-            color: AppColors.primary,
-            shape: const CircleBorder(),
-            elevation: 8,
-            shadowColor: AppColors.primary.withValues(alpha: 0.35),
-            child: InkWell(
-              customBorder: const CircleBorder(),
-              onTap: onPlayAudio,
-              child: const Padding(
-                padding: EdgeInsets.all(22),
-                child: Icon(
-                  Icons.volume_up_rounded,
-                  color: Colors.white,
-                  size: 36,
+              ),
+              Transform.translate(
+                offset: Offset(0, fabNudge),
+                child: Material(
+                  color: AppColors.primary,
+                  shape: const CircleBorder(),
+                  elevation: 8,
+                  shadowColor: AppColors.primary.withValues(alpha: 0.35),
+                  child: InkWell(
+                    customBorder: const CircleBorder(),
+                    onTap: onPlayAudio,
+                    child: Padding(
+                      padding: EdgeInsets.all(r.sp(18) * s),
+                      child: Icon(
+                        Icons.volume_up_rounded,
+                        color: Colors.white,
+                        size: r.sp(32) * s,
+                      ),
+                    ),
+                  ),
                 ),
               ),
-            ),
+            ],
           ),
-        ),
-      ],
+        );
+      },
     );
   }
 }
@@ -524,11 +618,12 @@ class _HintChips extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final r = _StudyResponsive(context);
     final label = categoryDisplayName(category);
     return Wrap(
       alignment: WrapAlignment.center,
-      spacing: 12,
-      runSpacing: 12,
+      spacing: r.sp(10),
+      runSpacing: r.sp(10),
       children: [
         _HintChip(
           icon: Icons.lightbulb_outline_rounded,
@@ -562,8 +657,12 @@ class _HintChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final r = _StudyResponsive(context);
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+      padding: EdgeInsets.symmetric(
+        horizontal: r.sp(16),
+        vertical: r.sp(10),
+      ),
       decoration: BoxDecoration(
         color: AppColors.surfaceContainerHigh,
         borderRadius: BorderRadius.circular(999),
@@ -571,12 +670,16 @@ class _HintChip extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 18, color: iconColor),
-          const SizedBox(width: 8),
+          Icon(
+            icon,
+            size: (16 * r.scale).clamp(14.0, 20.0),
+            color: iconColor,
+          ),
+          SizedBox(width: r.sp(8)),
           Text(
             label,
             style: GoogleFonts.beVietnamPro(
-              fontSize: 14,
+              fontSize: (13 * r.scale).clamp(11.0, 15.0),
               fontWeight: FontWeight.w600,
               fontStyle: italic ? FontStyle.italic : FontStyle.normal,
               color: AppColors.onSurfaceVariant,
@@ -610,20 +713,28 @@ class _StudyFooter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final (start, end) = visibleRange;
+    final r = _StudyResponsive(context);
+    final hPad = r.horizontalPadding();
+    final topPad = r.sp(26);
+    final botPad = r.sp(32) + bottomPadding;
+    final radius = r.sp(44).clamp(28.0, 48.0);
+    final prevCircle = r.sp(48).clamp(44.0, 58.0);
+    final dotH = r.sp(8).clamp(6.0, 10.0);
 
     return ClipRect(
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
         child: Container(
           padding: EdgeInsets.only(
-            left: 32,
-            right: 32,
-            top: 32,
-            bottom: 40 + bottomPadding,
+            left: hPad,
+            right: hPad,
+            top: topPad,
+            bottom: botPad,
           ),
           decoration: BoxDecoration(
             color: Colors.white.withValues(alpha: 0.82),
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(48)),
+            borderRadius:
+                BorderRadius.vertical(top: Radius.circular(radius)),
             border: Border(
               top: BorderSide(
                 color: const Color(0xFFCCFBF1).withValues(alpha: 0.35),
@@ -639,7 +750,7 @@ class _StudyFooter extends StatelessWidget {
           ),
           child: Center(
             child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 512),
+              constraints: BoxConstraints(maxWidth: r.contentMaxWidth()),
               child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -652,32 +763,33 @@ class _StudyFooter extends StatelessWidget {
                     child: Opacity(
                       opacity: canPrev ? 1 : 0.35,
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 8,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: r.sp(8),
+                          vertical: r.sp(6),
                         ),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Container(
-                              width: 56,
-                              height: 56,
+                              width: prevCircle,
+                              height: prevCircle,
                               decoration: BoxDecoration(
                                 color: AppColors.surfaceContainerLow,
                                 shape: BoxShape.circle,
                               ),
                               child: Icon(
                                 Icons.arrow_back_rounded,
+                                size: (22 * r.scale).clamp(20.0, 26.0),
                                 color: canPrev
                                     ? const Color(0xFF6F7977)
                                     : AppColors.outlineVariant,
                               ),
                             ),
-                            const SizedBox(height: 4),
+                            SizedBox(height: r.sp(3)),
                             Text(
                               'PREVIOUS',
                               style: GoogleFonts.beVietnamPro(
-                                fontSize: 11,
+                                fontSize: (10 * r.scale).clamp(9.0, 12.0),
                                 fontWeight: FontWeight.w500,
                                 letterSpacing: 0.5,
                                 color: const Color(0xFF6F7977),
@@ -694,11 +806,11 @@ class _StudyFooter extends StatelessWidget {
                   children: [
                     for (var i = start; i < end; i++)
                       Padding(
-                        padding: const EdgeInsets.only(right: 8),
+                        padding: EdgeInsets.only(right: r.sp(7)),
                         child: AnimatedContainer(
                           duration: const Duration(milliseconds: 200),
-                          width: i == currentIndex ? 24 : 8,
-                          height: 8,
+                          width: i == currentIndex ? r.sp(22) : dotH,
+                          height: dotH,
                           decoration: BoxDecoration(
                             color: AppColors.primary.withValues(
                               alpha: i == currentIndex ? 1 : 0.2,
@@ -721,9 +833,9 @@ class _StudyFooter extends StatelessWidget {
                     child: Opacity(
                       opacity: canNext ? 1 : 0.45,
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 24,
-                          vertical: 16,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: r.sp(18),
+                          vertical: r.sp(12),
                         ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
@@ -731,17 +843,17 @@ class _StudyFooter extends StatelessWidget {
                             Text(
                               'NEXT',
                               style: GoogleFonts.plusJakartaSans(
-                                fontSize: 13,
+                                fontSize: (12 * r.scale).clamp(11.0, 14.0),
                                 fontWeight: FontWeight.bold,
                                 letterSpacing: 1,
                                 color: AppColors.onSecondaryContainer,
                               ),
                             ),
-                            const SizedBox(width: 8),
+                            SizedBox(width: r.sp(6)),
                             Icon(
                               Icons.arrow_forward_rounded,
                               color: AppColors.onSecondaryContainer,
-                              size: 22,
+                              size: (20 * r.scale).clamp(18.0, 24.0),
                             ),
                           ],
                         ),
