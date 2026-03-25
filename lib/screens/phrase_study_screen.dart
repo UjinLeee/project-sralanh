@@ -397,9 +397,9 @@ class _StudyCard extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                               style: khmerTextStyle(
                                 context: context,
-                                fontSize: 48,
+                                fontSize: 30,
                                 fontWeight: FontWeight.bold,
-                                color: AppColors.onSurface,
+                                color: AppColors.onSurface.withValues(alpha: 0.9),
                               ),
                             ),
                           ],
@@ -426,30 +426,58 @@ class _StudyCard extends StatelessWidget {
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               style: GoogleFonts.plusJakartaSans(
-                                fontSize: 36,
+                                fontSize: 28,
                                 fontWeight: FontWeight.bold,
                                 color: AppColors.onSurface,
                                 height: 1.2,
                               ),
                             ),
-                            const SizedBox(height: 8),
+                            const SizedBox(height: 14),
                             Container(
+                              constraints: const BoxConstraints(minWidth: 220),
                               padding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 6,
+                                horizontal: 20,
+                                vertical: 10,
                               ),
                               decoration: BoxDecoration(
-                                color: AppColors.surfaceContainer,
-                                borderRadius: BorderRadius.circular(999),
+                                color: AppColors.secondaryContainer,
+                                borderRadius: BorderRadius.circular(18),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: AppColors.onSecondaryContainer
+                                        .withValues(alpha: 0.12),
+                                    blurRadius: 8,
+                                    offset: const Offset(0, 4),
+                                  ),
+                                ],
                               ),
-                              child: Text(
-                                '[ ${phrase.pronunciation} ]',
-                                style: GoogleFonts.beVietnamPro(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w500,
-                                  color: AppColors.onSurfaceVariant,
-                                  letterSpacing: 0.5,
-                                ),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    'PRONUNCIATION',
+                                    style: GoogleFonts.beVietnamPro(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w600,
+                                      letterSpacing: 1.8,
+                                      color: AppColors.onSecondaryContainer
+                                          .withValues(alpha: 0.72),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    '[ ${phrase.pronunciation} ]',
+                                    textAlign: TextAlign.center,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: GoogleFonts.beVietnamPro(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.w800,
+                                      color: AppColors.onSecondaryContainer,
+                                      letterSpacing: 0.4,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ],
