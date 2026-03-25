@@ -738,11 +738,11 @@ class _BottomNavBar extends StatelessWidget {
   final ValueChanged<int> onSelect;
   final double bottomPadding;
 
-  static const _items = <({IconData icon, String labelKm})>[
-    (icon: Icons.school_rounded, labelKm: 'មេរៀន'),
-    (icon: Icons.menu_book_rounded, labelKm: 'វចនានុក្រម'),
-    (icon: Icons.translate_rounded, labelKm: 'ការអនុវត្ត'),
-    (icon: Icons.person_rounded, labelKm: 'ប្រវត្តិរូប'),
+  static const _items = <({IconData icon, String label})>[
+    (icon: Icons.school_rounded, label: '수업·레슨'),
+    (icon: Icons.menu_book_rounded, label: '사전·어휘(단어장 뉘앙스)'),
+    (icon: Icons.translate_rounded, label: '연습·실습(적용)'),
+    (icon: Icons.person_rounded, label: '프로필'),
   ];
 
   @override
@@ -806,13 +806,15 @@ class _BottomNavBar extends StatelessWidget {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              item.labelKm,
-                              maxLines: 1,
+                              item.label,
+                              textAlign: TextAlign.center,
+                              maxLines: 2,
                               overflow: TextOverflow.ellipsis,
-                              style: GoogleFonts.kantumruyPro(
-                                fontSize: 9,
-                                fontWeight: FontWeight.w500,
-                                letterSpacing: 0.5,
+                              style: GoogleFonts.beVietnamPro(
+                                fontSize: 8.5,
+                                fontWeight: FontWeight.w600,
+                                height: 1.15,
+                                letterSpacing: 0.2,
                                 color: selected
                                     ? Colors.white
                                     : const Color(0xFF64748B),
