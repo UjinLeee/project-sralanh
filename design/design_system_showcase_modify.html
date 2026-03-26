@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sralanh — 3단계 성구 이원화 (Modify Showcase)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Kantumruy+Pro:wght@400;700&family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --font-ko-title: 'Gowun Dodum', 'Apple SD Gothic Neo', sans-serif;
+            --font-ko-body: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
+            --primary: #136964;
+            --on-primary: #FFFFFF;
+            --primary-container: #80CBC4;
+            --on-primary-container: #005652;
+            --secondary: #7B5549;
+            --secondary-container: #FFCCBC;
+            --on-secondary-container: #7A5448;
+            --surface-container-low: #E6F6FF;
+            --surface-container-high: #D5ECF8;
+            --on-surface: #071E27;
+            --on-surface-variant: #3F4947;
+            --outline-variant: #BEC9C7;
+            --accent-teal: #0D9488;
+            --accent-teal-surface: rgba(204, 251, 241, 0.5);
+            --accent-teal-border: rgba(204, 251, 241, 0.35);
+            --muted-slate: #64748B;
+            --shadow-soft: rgba(7, 30, 39, 0.04);
+            --shadow-nav: rgba(7, 30, 39, 0.06);
+            --bg-page: #FFFFFF;
+            --bg-card: #FFFFFF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg-page);
+            color: var(--on-surface);
+            font-family: var(--font-ko-body);
+            padding-bottom: 48px;
+        }
+
+        .header {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--outline-variant);
+            padding: 16px 28px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-title {
+            font-family: var(--font-ko-title);
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .header-sub {
+            font-size: 12px;
+            color: var(--on-surface-variant);
+            margin-top: 6px;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 28px 20px;
+        }
+
+        .layer-title {
+            font-family: var(--font-ko-title);
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--on-surface);
+            margin: 36px 0 8px;
+        }
+
+        .layer-title:first-of-type {
+            margin-top: 0;
+        }
+
+        .layer-sub {
+            font-size: 13px;
+            color: var(--on-surface-variant);
+            margin-bottom: 20px;
+            line-height: 1.55;
+        }
+
+        .section {
+            background: var(--bg-card);
+            border: 1px solid var(--outline-variant);
+            border-radius: 24px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .section-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .1em;
+            color: var(--on-surface-variant);
+            margin-bottom: 16px;
+            text-transform: uppercase;
+        }
+
+        .section-label span {
+            background: var(--surface-container-low);
+            border-radius: 8px;
+            padding: 2px 10px;
+        }
+
+        .compare-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            align-items: flex-start;
+        }
+
+        .compare-col {
+            flex: 1 1 280px;
+        }
+
+        .tag-pill {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .08em;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: var(--surface-container-high);
+            color: var(--on-surface-variant);
+            margin-bottom: 12px;
+        }
+
+        /* —— Compact: 기존 학습 카드 (phrases.json) —— */
+        .study-card {
+            background: var(--bg-card);
+            border-radius: 22px;
+            border: 1px solid rgba(190, 201, 199, 0.12);
+            box-shadow: 0 16px 32px var(--shadow-soft);
+            padding: 24px 20px 28px;
+            max-width: 340px;
+        }
+
+        .step-label {
+            font-family: var(--font-ko-body);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .step-label.ko {
+            color: rgba(123, 85, 73, 0.5);
+        }
+
+        .step-label.km {
+            color: rgba(19, 105, 100, 0.5);
+        }
+
+        .study-korean {
+            font-family: var(--font-ko-title);
+            font-size: 24px;
+            font-weight: 700;
+            text-align: center;
+            line-height: 1.25;
+            margin-bottom: 12px;
+        }
+
+        .pron-pill {
+            display: block;
+            width: fit-content;
+            margin: 0 auto 16px;
+            background: var(--secondary-container);
+            color: var(--on-secondary-container);
+            border-radius: 16px;
+            padding: 10px 16px;
+            box-shadow: 0 3px 8px rgba(122, 84, 72, 0.12);
+            text-align: center;
+        }
+
+        .pron-pill .cap {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 1.6px;
+            opacity: 0.72;
+            margin-bottom: 4px;
+        }
+
+        .pron-pill .body {
+            font-size: 16px;
+            font-weight: 800;
+        }
+
+        .study-khmer {
+            font-family: 'Kantumruy Pro', sans-serif;
+            font-size: 26px;
+            font-weight: 700;
+            text-align: center;
+            line-height: 1.35;
+            color: rgba(7, 30, 39, 0.92);
+        }
+
+        /* —— 안 A: 연속 절 스트림 —— */
+        .stream-verse {
+            position: relative;
+            padding: 16px 16px 16px 20px;
+            margin-bottom: 12px;
+            background: rgba(230, 246, 255, 0.45);
+            border-radius: 16px;
+            border: 1px solid rgba(190, 201, 199, 0.12);
+        }
+
+        .stream-verse::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 14px;
+            bottom: 14px;
+            width: 4px;
+            border-radius: 4px;
+            background: var(--primary);
+        }
+
+        .verse-meta {
+            font-family: var(--font-ko-body);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--muted-slate);
+            margin-bottom: 10px;
+        }
+
+        .stream-ko {
+            font-family: var(--font-ko-title);
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 1.4;
+            margin-bottom: 8px;
+        }
+
+        .stream-pron {
+            font-family: var(--font-ko-body);
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--on-secondary-container);
+            background: var(--secondary-container);
+            padding: 8px 12px;
+            border-radius: 12px;
+            display: inline-block;
+            margin-bottom: 10px;
+            max-width: 100%;
+        }
+
+        .stream-km {
+            font-family: 'Kantumruy Pro', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            line-height: 1.4;
+        }
+
+        /* —— 안 B: 절 페이저 —— */
+        .pager-frame {
+            max-width: 380px;
+            margin: 0 auto;
+            border-radius: 28px;
+            border: 1px solid var(--outline-variant);
+            overflow: hidden;
+            box-shadow: 0 20px 48px var(--shadow-soft);
+        }
+
+        .pager-inner {
+            padding: 28px 22px 100px;
+            min-height: 320px;
+            text-align: center;
+        }
+
+        .pager-verse-tag {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: 2px;
+            margin-bottom: 16px;
+        }
+
+        .pager-ko {
+            font-family: var(--font-ko-title);
+            font-size: 22px;
+            font-weight: 700;
+            line-height: 1.35;
+            margin-bottom: 14px;
+        }
+
+        .pager-pron {
+            margin: 0 auto 14px;
+        }
+
+        .pager-km {
+            font-family: 'Kantumruy Pro', sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+            line-height: 1.4;
+        }
+
+        .pager-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 18px 22px;
+            background: rgba(255, 255, 255, 0.92);
+            border-top: 1px solid var(--accent-teal-border);
+            box-shadow: 0 -10px 30px var(--shadow-nav);
+        }
+
+        .pager-footer .prev {
+            font-size: 9px;
+            color: var(--muted-slate);
+            text-align: center;
+        }
+
+        .pager-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .pager-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: var(--primary);
+            opacity: 0.2;
+        }
+
+        .pager-dot.on {
+            width: 20px;
+            opacity: 1;
+        }
+
+        .pager-next {
+            background: var(--secondary-container);
+            color: var(--on-secondary-container);
+            border: none;
+            border-radius: 999px;
+            padding: 10px 16px;
+            font-family: var(--font-ko-title);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            cursor: pointer;
+        }
+
+        /* —— 안 C: 접이식 발음 —— */
+        .collapse-verse {
+            border: 1px solid rgba(190, 201, 199, 0.15);
+            border-radius: 20px;
+            padding: 18px;
+            margin-bottom: 14px;
+            background: var(--bg-card);
+            box-shadow: 0 8px 24px var(--shadow-soft);
+        }
+
+        details.pron-details {
+            margin: 12px 0;
+            border-radius: 12px;
+            background: var(--surface-container-high);
+            overflow: hidden;
+        }
+
+        details.pron-details summary {
+            font-family: var(--font-ko-body);
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--on-surface-variant);
+            padding: 12px 14px;
+            cursor: pointer;
+            list-style: none;
+        }
+
+        details.pron-details summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .pron-expanded {
+            padding: 0 14px 14px;
+        }
+
+        .collapse-ko {
+            font-family: var(--font-ko-title);
+            font-size: 19px;
+            font-weight: 700;
+            line-height: 1.38;
+            margin-bottom: 6px;
+        }
+
+        .collapse-km {
+            font-family: 'Kantumruy Pro', sans-serif;
+            font-size: 21px;
+            font-weight: 700;
+            line-height: 1.42;
+            margin-top: 12px;
+        }
+
+        .doc-link {
+            font-size: 12px;
+            color: var(--accent-teal);
+            margin-top: 12px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <div class="header-title">Sralanh — 3단계 성구 · 이원화 쇼케이스</div>
+        <div class="header-sub">
+            <strong>Compact</strong>은 <code>phrases.json</code> (단어·짧은 문장).
+            <strong>Long-form</strong>은 <code>prayers.json</code> (주기도문·사도신경 등 절 구조).
+            상세 스펙은 <code>design_system_modify.md</code> · 본 페이지는 안 A/B/C 시각 참고용입니다.
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="layer-title">모드 비교</div>
+        <div class="layer-sub">왼쪽: 기존 학습 카드(Compact). 오른쪽: 긴 글에서 피하고 싶은 패턴(설명).</div>
+
+        <div class="section">
+            <div class="section-label">00 · <span>Compact vs Long-form 이슈</span></div>
+            <div class="compare-row">
+                <div class="compare-col">
+                    <span class="tag-pill">COMPACT · phrases.json</span>
+                    <div class="study-card">
+                        <div class="step-label ko">KOREAN</div>
+                        <div class="study-korean">안녕하세요</div>
+                        <div class="pron-pill">
+                            <div class="cap">PRONUNCIATION</div>
+                            <div class="body">[ 안녕하세요 ]</div>
+                        </div>
+                        <div class="step-label km">KHMER</div>
+                        <div class="study-khmer">សួស្តី</div>
+                    </div>
+                </div>
+                <div class="compare-col">
+                    <span class="tag-pill">LONG-FORM 주의점</span>
+                    <p style="font-size:13px;line-height:1.6;color:var(--on-surface-variant);">
+                        예배 데이터는 <strong>절 개수 × 카드 높이</strong>만큼 스크롤이 길어집니다.
+                        동일한 시각 무게를 반복하면 피로도가 올라가므로,
+                        아래 <strong>안 A(스트림)</strong> · <strong>안 B(페이저)</strong> · <strong>안 C(접이식 발음)</strong> 중
+                        콘텐츠 성격에 맞는 밀도·내비게이션을 선택합니다.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="layer-title">Long-form 설계 안 (3가지)</div>
+        <div class="layer-sub">데이터 필드는 동일하게 <code>korean · pronunciation · khmer</code> 순서를 유지합니다.</div>
+
+        <div class="section">
+            <div class="section-label">A · <span>LiturgyVerseStream</span> 연속 절 스트림</div>
+            <p style="font-size:12px;color:var(--on-surface-variant);margin-bottom:16px;line-height:1.55;">
+                좌측 primary 바 + 절 메타. 본문 타이포를 Compact보다 약간 축소해 한 화면에 더 많은 맥락을 담습니다.
+            </p>
+            <div class="stream-verse">
+                <div class="verse-meta">VERSE 2 / 9</div>
+                <div class="step-label ko" style="text-align:left;">KOREAN</div>
+                <div class="stream-ko">이름이 거룩히 여김을 받으시오며,</div>
+                <div class="stream-pron">쏨 아오이 쁘레아 니음 쁘레아 엉 찌어 띠 삭까라</div>
+                <div class="step-label km" style="text-align:left;">KHMER</div>
+                <div class="stream-km">សូមឱ្យព្រះនាមព្រះអង្គជាទីសក្ការៈ</div>
+            </div>
+            <div class="stream-verse">
+                <div class="verse-meta">VERSE 3 / 9</div>
+                <div class="step-label ko" style="text-align:left;">KOREAN</div>
+                <div class="stream-ko">나라가 임하시오며,</div>
+                <div class="stream-pron">쏨 아오이 쁘레아 리어찌어 쁘레아 엉 반 목 돌</div>
+                <div class="step-label km" style="text-align:left;">KHMER</div>
+                <div class="stream-km">សូមឱ្យព្រះរាជ្យព្រះអង្គបានមកដល់</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-label">B · <span>LiturgyVersePager</span> 절 단위 풀스크린</div>
+            <p style="font-size:12px;color:var(--on-surface-variant);margin-bottom:16px;line-height:1.55;">
+                한 절만 크게 표시. 하단은 StudyChrome과 같은 이전/도트/다음 리듬으로 절 이동.
+            </p>
+            <div class="pager-frame">
+                <div class="pager-inner">
+                    <div class="pager-verse-tag">주기도문 · VERSE 4 / 9</div>
+                    <div class="step-label ko">KOREAN</div>
+                    <div class="pager-ko">뜻이 하늘에서 이루어진 것 같이 땅에서도 이루어지이다.</div>
+                    <div class="pron-pill pager-pron">
+                        <div class="cap">PRONUNCIATION</div>
+                        <div class="body" style="font-size:13px;">쏨 아오이 쁘레아 하르따이…</div>
+                    </div>
+                    <div class="step-label km">KHMER</div>
+                    <div class="pager-km">សូមឱ្យព្រះហឫទ័យព្រះអង្គបានសម្រេច…</div>
+                </div>
+                <div class="pager-footer">
+                    <div class="prev">◀<br>PREV</div>
+                    <div class="pager-dots">
+                        <span class="pager-dot"></span>
+                        <span class="pager-dot"></span>
+                        <span class="pager-dot"></span>
+                        <span class="pager-dot on"></span>
+                        <span class="pager-dot"></span>
+                    </div>
+                    <button type="button" class="pager-next">NEXT ▶</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-label">C · <span>LiturgyCollapsiblePron</span> 접이식 발음</div>
+            <p style="font-size:12px;color:var(--on-surface-variant);margin-bottom:16px;line-height:1.55;">
+                한국어·크메르를 먼저 노출하고 발음은 <code>&lt;details&gt;</code>로 접습니다. Flutter에서는 <code>ExpansionTile</code> 등으로 대응.
+            </p>
+            <div class="collapse-verse">
+                <div class="step-label ko" style="text-align:left;">KOREAN</div>
+                <div class="collapse-ko">오늘 우리에게 일용할 양식을 주시옵고,</div>
+                <details class="pron-details">
+                    <summary>발음 보기 · 탭하여 펼치기</summary>
+                    <div class="pron-expanded">
+                        <div class="pron-pill" style="margin:0;text-align:left;">
+                            <div class="cap">PRONUNCIATION</div>
+                            <div class="body" style="font-size:14px;">쏨 쁘레아 띠어넝 아오이 아하 쁘러짬 틍아이 덜 요윽</div>
+                        </div>
+                    </div>
+                </details>
+                <div class="step-label km" style="text-align:left;">KHMER</div>
+                <div class="collapse-km">សូមប្រទានអាហារប្រចាំថ្ងៃដល់យើងខ្ញុំនៅថ្ងៃនេះ</div>
+            </div>
+            <p class="doc-link">기본 상태는 <strong>접힘</strong>으로 두는 것이 스크롤 절감에 유리합니다. 위 데모도 초기는 접힌 상태입니다.</p>
+        </div>
+    </div>
+</body>
+
+</html>

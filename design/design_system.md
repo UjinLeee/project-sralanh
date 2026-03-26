@@ -1,7 +1,9 @@
 # Sralanh — 앱 전용 디자인 시스템
 
-> **기준**: `lib/theme/app_theme.dart`, `home_screen.dart`, `phrase_study_screen.dart`에 구현된 색·타이포·패턴을 정리하고, 동일 톤으로 확장 컴포넌트를 정의합니다.  
-> **플랫폼**: Flutter (Material 3)
+> **기준**: `lib/theme/app_theme.dart`, `lib/screens/main_shell_screen.dart`, `home_tab_screen.dart`, `phrase_study_screen.dart`, `worship_screen.dart`, `saved_words_screen.dart`에 구현된 색·타이포·패턴을 정리하고, 동일 톤으로 확장 컴포넌트를 정의합니다.  
+> **플랫폼**: Flutter (Material 3)  
+> **쇼케이스 HTML**: `design/design_system_showcase_final.html`  
+> **3단계 성구 이원화·예배(긴 글) 확장안**: `design/design_system_modify.md`, `design/design_system_showcase_modify.html`
 
 ---
 
@@ -16,18 +18,19 @@
 | Level | 컴포넌트 | 등장·용도 | 설명 |
 |-------|---------|-----------|------|
 | **Token** | `AppColors` + `buildAppTheme` | 전체 | M3 계열 팔레트, `GoogleFonts` 기반 텍스트 테마 |
-| **Atom** | `khmerTextStyle` | 홈, 학습 카드 | 크메르어 전용 `Kantumruy Pro` 스타일 헬퍼 |
-| **Atom** | `GlassIconButton` (패턴) | 홈 상단바 | 틸 포그라운드 + 민트 반투명 배경 원형 메뉴 버튼 |
-| **Atom** | `PrimaryFAB` (패턴) | 홈, 학습 카드 | `AppColors.primary` 원형 + 볼륨 아이콘, elevation·그림자 |
+| **Atom** | `khmerTextStyle` | 홈, 학습, 예배 | 크메르어 전용 `Kantumruy Pro`, **줄간격(height) ≥ 1.3** |
+| **Atom** | `GlassIconButton` (패턴) | 상단바 | 틸 포그라운드 + 민트 반투명 배경 원형 버튼 |
+| **Atom** | `PrimaryFAB` (패턴) | 홈, 학습 카드 | `AppColors.primary` 원형 + 볼륨 아이콘 |
 | **Atom** | `ChipTag` | 홈 오늘의 문장 | `surfaceContainerLow` 캡슐 태그 |
 | **Molecule** | `PhraseOfDayCard` | 홈 | 그라데이션 글로우 + 흰 카드 + 배지 + 크메르/한국어 |
 | **Molecule** | `QuickActionGrid` | 홈 | 메인 CTA 타일 + 보조 2분할 타일 |
 | **Molecule** | `FeaturedLessonRow` | 홈 | 썸네일 + 크메르 제목 + 메타 텍스트 행 |
-| **Molecule** | **`SavedWordsOverview`** | 단어장 흐름(설계) | 저장 단어 목록·필터·빈 상태 — [§2.5](#25-molecule-savedwordsoverview--저장한-단어-모아보기) |
-| **Organism** | `BlurredTopBar` | 홈, 학습 | `BackdropFilter` + 연민트 글래스 배경 |
-| **Organism** | `BottomNavBar` | 홈 | 상단 라운드 글래스, 틸 선택 필, 슬레이트 비활성 · **프로필 탭 없음**(수업·레슨 · 사전·어휘 · 연습·실습 3탭) |
+| **Molecule** | **`SavedWordsOverview`** | 단어장 탭 | 저장 단어 목록·필터·빈 상태 — [§2.5](#25-molecule-savedwordsoverview--저장한-단어-모아보기) |
+| **Organism** | `BlurredTopBar` | 홈·단어장·예배·학습 | `BackdropFilter` + `glassMint` — 프로필 아바타 대신 검색 등 보조 슬롯 |
+| **Organism** | `BottomNavBar` | 루트 | 상단 라운드 글래스, 틸 선택 필 — **홈 · 단어장 · 예배**(프로필 탭 없음) |
 | **Organism** | `StudyChrome` | 학습 | 진행 헤더 + 하단 네비/도트 + `NEXT` 캡슐 |
-| **Organism** | **`ThreeStepPhraseLayout`** | 학습 카드 | 한국어 → 발음 → 크메르 3구역 — [§2.6](#26-organism-threestepphraselayout--3단계-성구-레이아웃) |
+| **Organism** | **`ThreeStepPhraseLayout` (Compact)** | `phrase_study_screen`, `phrases.json` | 단어·짧은 문장용 카드형 3단계 — [§2.6](#26-organism-threestepphraselayout-compact--단어--짧은-문장) |
+| **Organism** | **`ThreeStepLiturgyLayout` (Long-form)** | `worship_screen`, `prayers.json` | 주기도문·사도신경 등 **절 단위 긴 본문**용 3단계. 현행은 Compact와 유사한 절 카드 반복. **대안 3안은 [§2.7](#27-예배긴-글-3단계--확장-안) 및 `design_system_modify.md`** |
 
 ---
 
@@ -67,213 +70,137 @@ abstract final class AppColors {
 
   static const Color primaryFixed = Color(0xFFA4F0E9);
   static const Color secondaryFixed = Color(0xFFFFDBD0);
+
+  // 쇼케이스·구현 공통 보조 토큰
+  static const Color accentTeal = Color(0xFF0D9488);
+  static const Color titleSlate = Color(0xFF1E293B);
+  static const Color mutedSlate = Color(0xFF64748B);
+  // glassMint, accentTealSurface, accentTealBorder, shadowSoft, shadowNav — getter로 알파 적용
 }
 ```
 
 #### 화면에서 추가로 쓰이는 보조색
 
-| 토큰명(문서용) | HEX | 용도 |
-|----------------|-----|------|
-| `accentTeal` | `#0D9488` | 글래스 바 내 아이콘, 하단 탭 **선택** 배경 |
-| `accentTealSurface` | `#CCFBF1` @ 35~50% | 상·하단 바 보더/버튼 배경 |
-| `glassMint` | `#F0FDFA` @ 82% | 홈 상단 블러 배경 |
-| `titleSlate` | `#1E293B` | 앱바·섹션 타이틀 (Plus Jakarta) |
-| `mutedSlate` | `#64748B` | 비활성 탭 아이콘·라벨 |
-| `footerMuted` | `#6F7977` | 학습 푸터 `PREVIOUS` 라벨·아이콘 |
-| `shadow` | `#071E27` @ 4~6% | 카드·바 소프트 섀도 |
-| `error` | `#BA1A1A` | `ColorScheme.error` |
+| 토큰명(문서용) | HEX / 알파 | 용도 |
+|----------------|------------|------|
+| `accentTeal` | `#0D9488` | 글래스 바 아이콘, 하단 탭 **선택** 필 |
+| `accentTealSurface` | `#CCFBF1` @ 35~50% | 상·하단 바 버튼 배경 |
+| `accentTealBorder` | `#CCFBF1` @ 35% | 글래스 바 하단/상단 보더 |
+| `glassMint` | `#F0FDFA` @ 82% | 상단 블러 배경 |
+| `titleSlate` | `#1E293B` | 앱바·섹션 타이틀 (한글 제목 폰트 위에 얹는 색) |
+| `mutedSlate` | `#64748B` | 비활성 탭 |
+| `footerMuted` | `#6F7977` | 학습 푸터 `PREVIOUS` |
+| `shadowSoft` / `shadowNav` | `#071E27` @ 4~6% | 카드·하단 네비 |
 
-**사용 규칙 (요약)**
+**사용 규칙 (요약)**  
+(기존과 동일: CTA·진행바·발음 pill·채팅 FAB·본문 위계·카드 보더·히어로 글로우.)
 
-| 요소 | 색상 | 비고 |
-|------|------|------|
-| 메인 CTA·재생 FAB | `primary` | 홈 학습 시작, 학습 카드 볼륨 |
-| 진행 바 채움 | `primaryContainer` | 홈·학습 공통 |
-| 따뜻한 배지·발음 블록 | `secondaryContainer` / `onSecondaryContainer` | 카테고리 원형, 발음 pill |
-| 플로팅 채팅 FAB | `tertiaryContainer` / `onTertiaryContainer` | 홈 우하단 |
-| 본문·캡션 | `onSurface` / `onSurfaceVariant` | 계층 구분 |
-| 카드 보더 | `outlineVariant` @ 낮은 알파 | 미세 구분선 |
-| 오늘의 문장 글로우 | `primaryFixed` + `secondaryFixed` @ 35% 그라데이션 | 홈 히어로 카드 |
-
-### 2.2 Typography — 폰트 추천 3종
-
-앱에 이미 적용된 조합이 **한·영 UI + 크메르 본문**에 균형이 좋아, 아래 3가지를 **권장 스택**으로 둡니다.
+### 2.2 Typography — 폰트 스택 (쇼케이스·앱 정렬)
 
 | 역할 | 폰트 | 용도 |
 |------|------|------|
-| **Display / 제목** | **Plus Jakarta Sans** | 화면 타이틀, 학습 카드 한국어 강조, 레슨 라벨 |
-| **Body / UI** | **Be Vietnam Pro** | 본문, 캡션, 버튼·칩, 발음 표기, 퍼센트·메타 |
-| **Khmer** | **Kantumruy Pro** | 크메르어 문장·레슨 제목 (`khmerTextStyle`) |
+| **Display / 제목** | **Gowun Dodum** | 화면·섹션 타이틀, 학습 카드 한국어 강조 |
+| **Body / UI** | **Noto Sans KR** | 본문, 캡션, 버튼·칩, 발음 표기, 하단 탭 라벨 |
+| **Khmer** | **Kantumruy Pro** | 크메르 본문 (`khmerTextStyle`), **height ≥ 1.3** |
 
-구현 참고: `buildAppTheme()`에서 본문에 Be Vietnam Pro, 헤드라인 계열에 Plus Jakarta Sans를 얹는 방식과 동일하게 유지합니다.
+구현: `buildAppTheme()`에서 본문 계열에 Noto Sans KR, 타이틀/헤드라인에 Gowun Dodum을 적용합니다.
 
-**타이포 스케일 (화면에서 관측된 대표값)**
+**타이포 스케일 (참고)**
 
 | 용도 | 폰트 | 크기·굵기 (참고) |
 |------|------|------------------|
-| 홈 섹션 타이틀 | Plus Jakarta Sans | 22px, bold |
-| 앱바 타이틀 | Plus Jakarta Sans | 20px, bold |
-| 오늘의 문장 크메르 | Kantumruy Pro | ~32px, bold, `primary` |
-| 오늘의 문장 한국어 | Be Vietnam Pro | 20px, w500 |
-| 학습 카드 한국어 | Plus Jakarta Sans | 스케일 반응형 ~28sp, bold |
-| 학습 카드 발음 | Be Vietnam Pro | 캡션 ~10sp / 본문 ~24sp, w600~w800 |
-| 하단 탭 라벨 | Be Vietnam Pro | ~8.5sp, w600 |
+| 홈 섹션 타이틀 | Gowun Dodum | 22px, bold |
+| 앱바 타이틀 | Gowun Dodum | 20px, bold |
+| 오늘의 문장 크메르 | Kantumruy Pro | ~32px, bold, `primary`, height ≥ 1.3 |
+| 오늘의 문장 한국어 | Noto Sans KR | 20px, w500 |
+| 학습 카드 한국어 | Gowun Dodum | 반응형 ~28sp, bold |
+| 학습 카드 발음 | Noto Sans KR | 캡션 ~10sp / 본문 ~24sp, w600~w800 |
+| 하단 탭 라벨 | Noto Sans KR | ~8.5sp, w600 |
+| 예배 절(긴 글) 크메르 | Kantumruy Pro | 본문 24~28sp, **height 1.35~1.45** 권장 |
 
 ### 2.3 Spacing & Radius
 
 ```dart
-// 관측된 패턴 기준 (논리 픽셀)
 const spacing = {
-  'xs': 4,
-  'sm': 8,
-  'md': 12,
-  'lg': 16,
-  'xl': 20,
-  '2xl': 24,
-  '3xl': 32,
-  '4xl': 40,
+  'xs': 4, 'sm': 8, 'md': 12, 'lg': 16, 'xl': 20,
+  '2xl': 24, '3xl': 32, '4xl': 40,
 };
 
 const radius = {
-  'card': 24,        // 메인 카드, 퀵액션
-  'cardInner': 16,   // 레슨 썸네일
-  'pill': 999,       // 프로그레스 바, 칩, 탭 필
-  'bottomSheet': 48, // 하단 네비 상단 코너
+  'card': 24,
+  'cardInner': 16,
+  'pill': 999,
+  'bottomSheet': 48,
+  'liturgyVerse': 20,   // 긴 글 절 카드 (제안)
 };
 ```
 
 ### 2.4 Shadow 프리셋
 
 ```dart
-// 개념적 프리셋 (Flutter: BoxShadow)
-const shadows = {
-  'cardLift': BoxShadow(
-    color: Color(0xFF071E27).withValues(alpha: 0.04),
-    blurRadius: 40,
-    offset: Offset(0, 20),
-  ),
-  'primaryButton': BoxShadow(
-    color: AppColors.primary.withValues(alpha: 0.35),
-    blurRadius: 0, // elevation과 병행
-    offset: Offset(0, 8),
-  ),
-  'navBar': BoxShadow(
-    color: Color(0xFF071E27).withValues(alpha: 0.06),
-    blurRadius: 30,
-    offset: Offset(0, -10),
-  ),
-};
+// 개념적 프리셋 — AppColors.shadowSoft / shadowNav 와 동일 계열
 ```
 
 ---
 
 ## 2.5 Molecule: `SavedWordsOverview` — 저장한 단어 모아보기
 
-사용자가 **저장한 어휘·문장을 한 화면에서 스캔·필터**할 때 쓰는 블록입니다. (홈의 `단어장` 진입 등과 연결 가정)
+(레이아웃·프로퍼티 다이어그램은 기존과 동일.)
 
-```
-┌─────────────────────────────────────────────┐
-│  저장한 단어                    [검색 🔍]      │
-├─────────────────────────────────────────────┤
-│  [#전체] [#인사] [#어린이] [#교회]  …        │  ← ChipTag 패턴 재사용
-├─────────────────────────────────────────────┤
-│  ┌─────────────────────────────────────┐    │
-│  │ សួស្តី          저장됨 · 인사          │    │
-│  │ 안녕하세요                             │    │
-│  │ [발음] 안녕하세요                      │    │  ← secondaryContainer pill
-│  └─────────────────────────────────────┘    │
-│  ┌─────────────────────────────────────┐    │
-│  │ … 다음 행 …                           │    │
-│  └─────────────────────────────────────┘    │
-└─────────────────────────────────────────────┘
-```
+**스타일 핵심 (폰트만 갱신)**
 
-```dart
-// 제안 프로퍼티 (Flutter)
-class SavedWordsOverviewProps {
-  final String title;                    // e.g. '저장한 단어'
-  final String? query;
-  final ValueChanged<String>? onQueryChanged;
-  final List<String> categories;         // category 키
-  final String? selectedCategory;
-  final ValueChanged<String?>? onCategoryChanged;
-  final List<SavedWordItem> items;
-  final VoidCallback? onItemTap;
-  final void Function(SavedWordItem item)? onRemoveSaved;
-}
-
-class SavedWordItem {
-  final String khmer;
-  final String korean;
-  final String pronunciation;
-  final String category;                 // greeting | kids | church …
-  final DateTime? savedAt;
-}
-```
-
-**스타일 핵심**
-
-- 화면 배경: `Scaffold` → `Colors.white` (현행과 동일).
-- 섹션 타이틀: Plus Jakarta Sans, `onSurface`, 홈 `_FeaturedLesson`과 동일 위계.
-- 필터 칩: 홈 `_ChipTag`와 동일 — 배경 `surfaceContainerLow`, 텍스트 `onSurfaceVariant`, 선택 시 `primary` 테두리 또는 `primaryContainer` 채움.
-- 행 카드: 흰 배경, `radius.card`, `outlineVariant` @ 12% 보더, `shadows.cardLift` 수준.
-- 행 내 크메르: `khmerTextStyle`, 색 `primary`.
-- 행 내 한국어: Be Vietnam Pro, `onSurface`.
-- 발음 한 줄: `secondaryContainer` 캡슐 + `onSecondaryContainer` (학습 카드 발음 블록과 통일).
-- 빈 상태: 일러스트 또는 아이콘 + `onSurfaceVariant` 안내 문구, CTA는 `primary` filled.
+- 섹션 타이틀: **Gowun Dodum**, `onSurface`.
+- 행 내 한국어: **Noto Sans KR**, `onSurface`.
+- 나머지(칩, 카드, 크메르, 발음 pill)는 §2.1·§2.2와 동일 패턴.
 
 ---
 
-## 2.6 Organism: `ThreeStepPhraseLayout` — 3단계 성구 레이아웃
+## 2.6 Organism: `ThreeStepPhraseLayout` (Compact) — 단어 / 짧은 문장
 
-학습 카드(`_StudyCard`)에서 **의미 단계가 위→아래로 고정**된 레이아웃입니다.
+**데이터**: `assets/data/phrases.json` — 카테고리·짧은 구절.  
+**화면**: `phrase_study_screen.dart`의 `_StudyCard` 패턴.
 
-1. **KOREAN** — 목표 문장(학습자 모국어)  
-2. **PRONUNCIATION** — 청각·발음 앵커  
-3. **KHMER** — 현지어 표현  
+학습 카드에서 **의미 단계가 위→아래로 고정**됩니다.
 
-```
-        ┌── category 아이콘 원 (secondaryContainer)
-        │
-┌───────┴───────────────────────────────────────┐
-│                                               │
-│                    KOREAN                     │  ← Be Vietnam Pro 라벨
-│              [한국어 본문, Plus Jakarta Bold]   │
-│                                               │
-│         ╭─────────────────────────╮           │
-│         │ PRONUNCIATION           │           │  ← secondaryContainer pill
-│         │ [ 발음 문자열 ]           │           │
-│         ╰─────────────────────────╯           │
-│                                               │
-│                    KHMER                      │  ← Kantumruy Pro 라벨
-│              [크메르 본문, Kantumruy Bold]     │
-│                                               │
-└───────────────────────────────────────────────┘
-              ● 볼륨 FAB (primary, 하단 중앙 살짝 돌출)
-```
+1. **KOREAN**  
+2. **PRONUNCIATION**  
+3. **KHMER**
+
+**스타일 핵심**
+
+- 외곽: 흰 배경, 둥근 모서리(반응형 ~16–26), 미세 보더, 소프트 섀도.
+- 상단 **11 : 하단 9** 세로 비율로 한국어+발음 구역과 크메르 구역 분리.
+- 라벨: **Noto Sans KR**, bold, letterSpacing ~2, 색은 `secondary` / `primary` 50% 알파.
+- 한국어 본문 강조: **Gowun Dodum** bold.
+- 발음 pill: `secondaryContainer` + `onSecondaryContainer`.
+- 하단 FAB: `primary` + `Icons.volume_up_rounded`.
+- 스케일: `_StudyResponsive.studyCardInnerScale`.
 
 ```dart
-// 제안 프로퍼티
 class ThreeStepPhraseLayoutProps {
   final String korean;
   final String pronunciation;
   final String khmer;
-  final String category;                 // categoryIcon 매핑용
+  final String category;
   final VoidCallback onPlayAudio;
-  /// 카드 높이는 shortest side 기준 반응형 (phrase_study_screen._StudyResponsive)
   final double cardWidth;
   final double cardHeight;
 }
 ```
 
-**스타일 핵심**
+---
 
-- 외곽: 흰 배경, 둥근 모서리(반응형 ~16–26), 미세 보더, 소프트 섀도.
-- 상단 **11 : 하단 9** 세로 비율(`Expanded` flex)로 한국어+발음 구역과 크메르 구역 분리.
-- 라벨(`KOREAN` / `KHMER`): Be Vietnam Pro, bold, letterSpacing ~2, 각각 `secondary`·`primary` 50% 알파.
-- 발음 pill: `secondaryContainer`, 내부 캡션 + 본문 2단, 그림자는 `onSecondaryContainer` @ 12% 정도.
-- 하단 FAB: `primary` 원, `Icons.volume_up_rounded`, 흰 아이콘, elevation 8.
-- 스케일: `_StudyResponsive.studyCardInnerScale`로 짧은 카드에서 폰트 축소.
+## 2.7 예배(긴 글) 3단계 — 확장 안
+
+**데이터**: `assets/data/prayers.json` — 기도문 단위 `title` + `content[]` 절, 각 절 `{ korean, pronunciation, khmer }`.  
+**화면**: `worship_screen.dart` (현재는 절마다 Compact와 유사한 세로 스택 카드를 반복).
+
+긴 글은 **한 화면 정보 밀도·스크롤 길이·집중도**가 Compact와 다릅니다. 동일한 3단계 **순서**는 유지하되, 레이아웃·내비게이션은 아래 문서에서 **3가지 설계안**으로 구체화합니다.
+
+| 문서 / 파일 | 내용 |
+|-------------|------|
+| `design_system_modify.md` | 모드 비교표, 안 A/B/C 스펙, Flutter·JSON 매핑 메모 |
+| `design_system_showcase_modify.html` | Compact vs 긴 글 3안 시각 데모 |
 
 ---
 
@@ -281,17 +208,21 @@ class ThreeStepPhraseLayoutProps {
 
 | 문서 토큰 | 코드 위치 |
 |-----------|-----------|
-| 코어 색상 | `lib/theme/app_theme.dart` → `AppColors` |
+| 코어·보조 색상 | `lib/theme/app_theme.dart` → `AppColors` |
 | 테마 조립 | `buildAppTheme()` |
 | 크메르 타이포 | `khmerTextStyle()` |
 | 카테고리 칩·아이콘 | `categoryTagLabel`, `categoryDisplayName`, `categoryIcon` |
+| 루트 탭 | `main_shell_screen.dart` |
+| Compact 3단계 | `phrase_study_screen.dart` |
+| 예배 3단계(현행) | `worship_screen.dart` |
 
 ---
 
 ## 4. 변경 시 체크리스트
 
-- [ ] 하단 내비(`BottomNavBar`)에 **프로필 탭을 두지 않을 것**(수업·레슨 · 사전·어휘 · 연습·실습 3탭만).
-- [ ] 새 색이 들어가면 `AppColors`에 먼저 추가하고, 화면 하드코딩을 점진적으로 치환할 것.
-- [ ] 한글/영문 UI는 Plus Jakarta Sans vs Be Vietnam Pro 역할이 뒤바뀌지 않도록 유지할 것.
-- [ ] 크메르 문자열은 반드시 `Kantumruy Pro` 경로로 렌더할 것.
-- [ ] `SavedWordsOverview`·`ThreeStepPhraseLayout`을 구현할 때 본 문서의 반지름·섀도를 홈/학습과 동기화할 것.
+- [ ] 하단 내비에 **프로필 탭 없음** — **홈 · 단어장 · 예배**만.
+- [ ] 새 색은 `AppColors`에 먼저 추가 후 화면 하드코딩 치환.
+- [ ] 한글 UI: **제목 Gowun Dodum**, **본문·캡션 Noto Sans KR** 역할 유지.
+- [ ] 크메르는 **Kantumruy Pro**, **height ≥ 1.3** (긴 글은 modify 문서 권장값 참고).
+- [ ] `phrases.json` → Compact, `prayers.json` → Long-form; 예배 UI 변경 시 `design_system_modify.md`와 동기화.
+- [ ] `SavedWordsOverview`·카드 반지름·섀도는 홈·학습·예배 간 일관 유지.

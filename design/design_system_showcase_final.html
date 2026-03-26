@@ -895,6 +895,97 @@
             margin-bottom: 10px;
             padding: 0 6px;
         }
+
+        /* —— LiturgyCollapsiblePron (예배·긴 글 최종안) — design_system_showcase_modify C안 통합 */
+        .compare-row-liturgy {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 28px;
+            align-items: flex-start;
+            margin-bottom: 24px;
+        }
+
+        .compare-col-liturgy {
+            flex: 1 1 280px;
+        }
+
+        .tag-pill-liturgy {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .08em;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: var(--surface-container-high);
+            color: var(--on-surface-variant);
+            margin-bottom: 12px;
+        }
+
+        .collapse-verse {
+            border: 1px solid rgba(190, 201, 199, 0.15);
+            border-radius: 20px;
+            padding: 18px;
+            margin-bottom: 14px;
+            background: var(--bg-card);
+            box-shadow: 0 8px 24px var(--shadow-soft);
+        }
+
+        details.pron-details {
+            margin: 12px 0;
+            border-radius: 12px;
+            background: var(--surface-container-high);
+            overflow: hidden;
+        }
+
+        details.pron-details summary {
+            font-family: var(--font-ko-body);
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--on-surface-variant);
+            padding: 12px 14px;
+            cursor: pointer;
+            list-style: none;
+        }
+
+        details.pron-details summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .pron-expanded {
+            padding: 0 14px 14px;
+        }
+
+        .collapse-ko {
+            font-family: var(--font-ko-title);
+            font-size: 19px;
+            font-weight: 700;
+            line-height: 1.38;
+            margin-bottom: 6px;
+        }
+
+        .collapse-km {
+            font-family: 'Kantumruy Pro', sans-serif;
+            font-size: 21px;
+            font-weight: 700;
+            line-height: 1.42;
+            margin-top: 12px;
+        }
+
+        .liturgy-final-note {
+            font-size: 12px;
+            color: var(--accent-teal);
+            margin-top: 14px;
+            line-height: 1.5;
+        }
+
+        [data-theme="dark"] .collapse-verse {
+            border-color: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        [data-theme="dark"] details.pron-details summary {
+            color: var(--on-surface-variant);
+        }
     </style>
 </head>
 
@@ -1117,7 +1208,7 @@
 
         <!-- Organisms -->
         <div class="layer-title">Organisms</div>
-        <div class="layer-sub">BlurredTopBar · BottomNavBar(3탭·프로필 탭 없음) · StudyChrome · ThreeStepPhraseLayout</div>
+        <div class="layer-sub">BlurredTopBar · BottomNavBar(3탭·프로필 탭 없음) · StudyChrome · ThreeStepPhraseLayout(Compact) · LiturgyCollapsiblePron(예배 최종)</div>
 
         <div class="section">
             <div class="section-label">10 · <span>BlurredTopBar</span> (홈 스타일)</div>
@@ -1172,7 +1263,10 @@
         </div>
 
         <div class="section">
-            <div class="section-label">13 · <span>ThreeStepPhraseLayout</span> — 3단계 성구</div>
+            <div class="section-label">13 · <span>ThreeStepPhraseLayout</span> — 3단계 성구 (Compact)</div>
+            <p style="margin:-8px 0 18px;font-size:12px;color:var(--on-surface-variant);line-height:1.55;">
+                <code>phrases.json</code> · 단어·짧은 문장 학습. 발음은 항상 펼쳐진 pill.
+            </p>
             <div class="study-card-wrap">
                 <div class="study-card">
                     <div class="study-cat-icon">👋</div>
@@ -1207,6 +1301,81 @@
                 </div>
                 <button type="button" class="footer-next">NEXT →</button>
             </div>
+        </div>
+
+        <div class="section">
+            <div class="section-label">14 · <span>ThreeStepLiturgyLayout</span> — LiturgyCollapsiblePron (최종안)</div>
+            <p style="margin:-8px 0 16px;font-size:13px;color:var(--on-surface-variant);line-height:1.6;">
+                <code>prayers.json</code> · 주기도문·사도신경 등 긴 글은 <strong>동일 3단계 순서</strong>(한국어 → 발음 → 크메르)를 유지하되,
+                발음은 <strong>기본 접힘</strong>으로 스크롤을 줄입니다. Flutter에서는 <code>ExpansionTile</code>·바텀시트 등으로 대응합니다.
+                (<code>design_system_modify.md</code> 안 C 확정 · 본 섹션은 <code>design_system_showcase_modify.html</code> C안과 통합.)
+            </p>
+
+            <div class="compare-row-liturgy">
+                <div class="compare-col-liturgy">
+                    <span class="tag-pill-liturgy">§13 Compact · phrases</span>
+                    <div class="study-card" style="max-width:340px;padding:20px 18px 24px;">
+                        <div class="study-body" style="padding-top:0;">
+                            <div class="step-label ko">KOREAN</div>
+                            <div class="study-korean" style="font-size:22px;">짧은 문장</div>
+                            <div class="study-pron-wrap">
+                                <div class="pron-pill" style="text-align:center;">
+                                    <div class="cap">PRONUNCIATION</div>
+                                    <div class="body" style="font-size:15px;">[ 항상 표시 ]</div>
+                                </div>
+                            </div>
+                            <div class="step-label km">KHMER</div>
+                            <div class="study-khmer" style="font-size:24px;">ខ្មែរ</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="compare-col-liturgy">
+                    <span class="tag-pill-liturgy">§14 최종 · prayers (접이식 발음)</span>
+                    <p style="font-size:12px;color:var(--on-surface-variant);line-height:1.55;margin-bottom:10px;">
+                        한국어·크메르를 먼저 읽고, 발음은 필요할 때만 펼칩니다.
+                    </p>
+                </div>
+            </div>
+
+            <p style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--on-surface-variant);margin-bottom:10px;">
+                주기도문 샘플 (절 연속)
+            </p>
+
+            <div class="collapse-verse">
+                <div class="step-label ko" style="text-align:left;">KOREAN</div>
+                <div class="collapse-ko">오늘 우리에게 일용할 양식을 주시옵고,</div>
+                <details class="pron-details">
+                    <summary>발음 보기 · 탭하여 펼치기</summary>
+                    <div class="pron-expanded">
+                        <div class="pron-pill" style="margin:0;text-align:left;">
+                            <div class="cap">PRONUNCIATION</div>
+                            <div class="body" style="font-size:14px;">쏨 쁘레아 띠어넝 아오이 아하 쁘러짬 틍아이 덜 요윽</div>
+                        </div>
+                    </div>
+                </details>
+                <div class="step-label km" style="text-align:left;">KHMER</div>
+                <div class="collapse-km">សូមប្រទានអាហារប្រចាំថ្ងៃដល់យើងខ្ញុំនៅថ្ងៃនេះ</div>
+            </div>
+
+            <div class="collapse-verse">
+                <div class="step-label ko" style="text-align:left;">KOREAN</div>
+                <div class="collapse-ko">우리가 우리에게 죄 지은 자를 사하여 준 것 같이 우리 죄를 사하여 주시옵고,</div>
+                <details class="pron-details">
+                    <summary>발음 보기 · 탭하여 펼치기</summary>
+                    <div class="pron-expanded">
+                        <div class="pron-pill" style="margin:0;text-align:left;">
+                            <div class="cap">PRONUNCIATION</div>
+                            <div class="body" style="font-size:13px;line-height:1.45;">쏨 쁘레아 엉 아또ㅎ 아오이 요윽 도잊 요윽 아또ㅎ 아오이 어ㅎ 네아 다엘 쁘러쁘럿 꼬ㅎ 덜 요윽</div>
+                        </div>
+                    </div>
+                </details>
+                <div class="step-label km" style="text-align:left;">KHMER</div>
+                <div class="collapse-km">សូមអត់ទោសឱ្យយើងខ្ញុំ ដូចយើងខ្ញុំអត់ទោសឱ្យអស់អ្នកដែលប្រព្រឹត្តខុសនឹងយើងខ្ញុំ</div>
+            </div>
+
+            <p class="liturgy-final-note">
+                기본 상태는 <strong>접힘</strong>이 스크롤·낭독 피로를 줄이는 최종 패턴입니다. §13의 <code>pron-pill</code> 스타일을 §14에서 펼쳤을 때 그대로 재사용합니다.
+            </p>
         </div>
     </div>
 
