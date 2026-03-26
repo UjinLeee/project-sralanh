@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project_sralanh/screens/home_tab_screen.dart';
 import 'package:project_sralanh/screens/saved_words_screen.dart';
-import 'package:project_sralanh/screens/worship_screen.dart';
+import 'package:project_sralanh/screens/scripture_screen.dart';
 import 'package:project_sralanh/widgets/sralanh_bottom_nav_bar.dart';
 
 /// 루트 셸: 홈 · 단어장 · 예배 + Sralanh 하단 네비.
@@ -32,10 +32,10 @@ class _MainShellScreenState extends State<MainShellScreen> {
           Positioned.fill(
             child: IndexedStack(
               index: _tab,
-              children: const [
-                HomeTabScreen(),
-                SavedWordsScreen(),
-                WorshipScreen(),
+              children: [
+                const HomeTabScreen(),
+                const SavedWordsScreen(),
+                const ScriptureScreen(),
               ],
             ),
           ),

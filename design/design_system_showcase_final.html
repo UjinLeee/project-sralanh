@@ -896,7 +896,7 @@
             padding: 0 6px;
         }
 
-        /* —— LiturgyCollapsiblePron (예배·긴 글 최종안) — design_system_showcase_modify C안 통합 */
+        /* —— ThreeStepLiturgyLayout (예배·긴 글) — 발음 배경 살구 vs 파란 비교 */
         .compare-row-liturgy {
             display: flex;
             flex-wrap: wrap;
@@ -930,29 +930,67 @@
             box-shadow: 0 8px 24px var(--shadow-soft);
         }
 
-        details.pron-details {
-            margin: 12px 0;
+        .liturgy-pron-panel {
+            margin: 0;
             border-radius: 12px;
             background: var(--surface-container-high);
-            overflow: hidden;
+            padding: 14px 16px;
         }
 
-        details.pron-details summary {
+        .liturgy-pron-compare-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin: 12px 0;
+            align-items: stretch;
+        }
+
+        .liturgy-pron-compare-col {
+            flex: 1 1 220px;
+            min-width: 180px;
+        }
+
+        .liturgy-pron-compare-label {
             font-family: var(--font-ko-body);
-            font-size: 13px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            color: var(--muted-slate);
+            margin-bottom: 8px;
+        }
+
+        .liturgy-pron-panel--peach {
+            background: var(--secondary-container);
+            box-shadow: 0 3px 8px rgba(122, 84, 72, 0.12);
+        }
+
+        .liturgy-pron-panel--peach .liturgy-pron-cap {
+            color: var(--on-secondary-container);
+            opacity: 0.72;
+        }
+
+        .liturgy-pron-panel--peach .liturgy-pron-body {
+            color: var(--on-secondary-container);
+            font-weight: 800;
+            letter-spacing: 0.4px;
+        }
+
+        .liturgy-pron-cap {
+            font-family: var(--font-ko-body);
+            font-size: 10px;
             font-weight: 600;
+            letter-spacing: 1.6px;
             color: var(--on-surface-variant);
-            padding: 12px 14px;
-            cursor: pointer;
-            list-style: none;
+            opacity: 0.88;
+            margin-bottom: 6px;
         }
 
-        details.pron-details summary::-webkit-details-marker {
-            display: none;
-        }
-
-        .pron-expanded {
-            padding: 0 14px 14px;
+        .liturgy-pron-body {
+            font-family: var(--font-ko-body);
+            font-size: 14px;
+            font-weight: 700;
+            line-height: 1.45;
+            color: var(--on-surface);
         }
 
         .collapse-ko {
@@ -965,7 +1003,7 @@
 
         .collapse-km {
             font-family: 'Kantumruy Pro', sans-serif;
-            font-size: 21px;
+            font-size: 17px;
             font-weight: 700;
             line-height: 1.42;
             margin-top: 12px;
@@ -983,8 +1021,12 @@
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
         }
 
-        [data-theme="dark"] details.pron-details summary {
-            color: var(--on-surface-variant);
+        [data-theme="dark"] .liturgy-pron-panel:not(.liturgy-pron-panel--peach) {
+            background: var(--surface-container-high);
+        }
+
+        [data-theme="dark"] .liturgy-pron-panel:not(.liturgy-pron-panel--peach) .liturgy-pron-body {
+            color: var(--on-surface);
         }
     </style>
 </head>
@@ -1208,7 +1250,7 @@
 
         <!-- Organisms -->
         <div class="layer-title">Organisms</div>
-        <div class="layer-sub">BlurredTopBar · BottomNavBar(3탭·프로필 탭 없음) · StudyChrome · ThreeStepPhraseLayout(Compact) · LiturgyCollapsiblePron(예배 최종)</div>
+        <div class="layer-sub">BlurredTopBar · BottomNavBar(3탭·프로필 탭 없음) · StudyChrome · ThreeStepPhraseLayout(Compact) · ThreeStepLiturgyLayout(예배·발음 살구/파란 비교)</div>
 
         <div class="section">
             <div class="section-label">10 · <span>BlurredTopBar</span> (홈 스타일)</div>
@@ -1304,11 +1346,11 @@
         </div>
 
         <div class="section">
-            <div class="section-label">14 · <span>ThreeStepLiturgyLayout</span> — LiturgyCollapsiblePron (최종안)</div>
+            <div class="section-label">14 · <span>ThreeStepLiturgyLayout</span> — 예배·긴 글 (최종안)</div>
             <p style="margin:-8px 0 16px;font-size:13px;color:var(--on-surface-variant);line-height:1.6;">
-                <code>prayers.json</code> · 주기도문·사도신경 등 긴 글은 <strong>동일 3단계 순서</strong>(한국어 → 발음 → 크메르)를 유지하되,
-                발음은 <strong>기본 접힘</strong>으로 스크롤을 줄입니다. Flutter에서는 <code>ExpansionTile</code>·바텀시트 등으로 대응합니다.
-                (<code>design_system_modify.md</code> 안 C 확정 · 본 섹션은 <code>design_system_showcase_modify.html</code> C안과 통합.)
+                <code>prayers.json</code> · 주기도문·사도신경 등 긴 글은 <strong>동일 3단계 순서</strong>(한국어 → 발음 → 크메르)를 유지합니다.
+                발음 배경은 아래 샘플에서 <strong>살구색(<code>secondaryContainer</code>)</strong>과 <strong>파란색(<code>surfaceContainerHigh</code>)</strong>을 나란히 두어 비교할 수 있습니다.
+                크메르 본문은 Compact 대비 약 <strong>20% 작은</strong> 권장 크기입니다.
             </p>
 
             <div class="compare-row-liturgy">
@@ -1330,29 +1372,36 @@
                     </div>
                 </div>
                 <div class="compare-col-liturgy">
-                    <span class="tag-pill-liturgy">§14 최종 · prayers (접이식 발음)</span>
+                    <span class="tag-pill-liturgy">§14 최종 · prayers</span>
                     <p style="font-size:12px;color:var(--on-surface-variant);line-height:1.55;margin-bottom:10px;">
-                        한국어·크메르를 먼저 읽고, 발음은 필요할 때만 펼칩니다.
+                        §14 샘플 절에서는 발음을 <strong>살구 / 파란</strong> 두 버전으로 비교합니다. 나머지 레이아웃은 동일합니다.
                     </p>
                 </div>
             </div>
 
             <p style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--on-surface-variant);margin-bottom:10px;">
-                주기도문 샘플 (절 연속)
+                주기도문 샘플 (절 연속 · 발음 배경 A/B 비교)
             </p>
 
             <div class="collapse-verse">
                 <div class="step-label ko" style="text-align:left;">KOREAN</div>
                 <div class="collapse-ko">오늘 우리에게 일용할 양식을 주시옵고,</div>
-                <details class="pron-details">
-                    <summary>발음 보기 · 탭하여 펼치기</summary>
-                    <div class="pron-expanded">
-                        <div class="pron-pill" style="margin:0;text-align:left;">
-                            <div class="cap">PRONUNCIATION</div>
-                            <div class="body" style="font-size:14px;">쏨 쁘레아 띠어넝 아오이 아하 쁘러짬 틍아이 덜 요윽</div>
+                <div class="liturgy-pron-compare-row">
+                    <div class="liturgy-pron-compare-col">
+                        <div class="liturgy-pron-compare-label">살구색 · secondaryContainer</div>
+                        <div class="liturgy-pron-panel liturgy-pron-panel--peach">
+                            <div class="liturgy-pron-cap">PRONUNCIATION</div>
+                            <div class="liturgy-pron-body">쏨 쁘레아 띠어넝 아오이 아하 쁘러짬 틍아이 덜 요윽</div>
                         </div>
                     </div>
-                </details>
+                    <div class="liturgy-pron-compare-col">
+                        <div class="liturgy-pron-compare-label">파란색 · surfaceContainerHigh</div>
+                        <div class="liturgy-pron-panel">
+                            <div class="liturgy-pron-cap">PRONUNCIATION</div>
+                            <div class="liturgy-pron-body">쏨 쁘레아 띠어넝 아오이 아하 쁘러짬 틍아이 덜 요윽</div>
+                        </div>
+                    </div>
+                </div>
                 <div class="step-label km" style="text-align:left;">KHMER</div>
                 <div class="collapse-km">សូមប្រទានអាហារប្រចាំថ្ងៃដល់យើងខ្ញុំនៅថ្ងៃនេះ</div>
             </div>
@@ -1360,21 +1409,28 @@
             <div class="collapse-verse">
                 <div class="step-label ko" style="text-align:left;">KOREAN</div>
                 <div class="collapse-ko">우리가 우리에게 죄 지은 자를 사하여 준 것 같이 우리 죄를 사하여 주시옵고,</div>
-                <details class="pron-details">
-                    <summary>발음 보기 · 탭하여 펼치기</summary>
-                    <div class="pron-expanded">
-                        <div class="pron-pill" style="margin:0;text-align:left;">
-                            <div class="cap">PRONUNCIATION</div>
-                            <div class="body" style="font-size:13px;line-height:1.45;">쏨 쁘레아 엉 아또ㅎ 아오이 요윽 도잊 요윽 아또ㅎ 아오이 어ㅎ 네아 다엘 쁘러쁘럿 꼬ㅎ 덜 요윽</div>
+                <div class="liturgy-pron-compare-row">
+                    <div class="liturgy-pron-compare-col">
+                        <div class="liturgy-pron-compare-label">살구색 · secondaryContainer</div>
+                        <div class="liturgy-pron-panel liturgy-pron-panel--peach">
+                            <div class="liturgy-pron-cap">PRONUNCIATION</div>
+                            <div class="liturgy-pron-body">쏨 쁘레아 엉 아또ㅎ 아오이 요윽 도잊 요윽 아또ㅎ 아오이 어ㅎ 네아 다엘 쁘러쁘럿 꼬ㅎ 덜 요윽</div>
                         </div>
                     </div>
-                </details>
+                    <div class="liturgy-pron-compare-col">
+                        <div class="liturgy-pron-compare-label">파란색 · surfaceContainerHigh</div>
+                        <div class="liturgy-pron-panel">
+                            <div class="liturgy-pron-cap">PRONUNCIATION</div>
+                            <div class="liturgy-pron-body">쏨 쁘레아 엉 아또ㅎ 아오이 요윽 도잊 요윽 아또ㅎ 아오이 어ㅎ 네아 다엘 쁘러쁘럿 꼬ㅎ 덜 요윽</div>
+                        </div>
+                    </div>
+                </div>
                 <div class="step-label km" style="text-align:left;">KHMER</div>
                 <div class="collapse-km">សូមអត់ទោសឱ្យយើងខ្ញុំ ដូចយើងខ្ញុំអត់ទោសឱ្យអស់អ្នកដែលប្រព្រឹត្តខុសនឹងយើងខ្ញុំ</div>
             </div>
 
             <p class="liturgy-final-note">
-                기본 상태는 <strong>접힘</strong>이 스크롤·낭독 피로를 줄이는 최종 패턴입니다. §13의 <code>pron-pill</code> 스타일을 §14에서 펼쳤을 때 그대로 재사용합니다.
+                동일한 발음 문자열·타이포로 배경 토큰만 바꿉니다. 제품에서는 비교 후 한 가지로 통일하면 됩니다.
             </p>
         </div>
     </div>
