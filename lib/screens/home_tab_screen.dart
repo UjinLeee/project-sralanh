@@ -7,9 +7,13 @@ import 'package:project_sralanh/models/phrase.dart';
 import 'package:project_sralanh/screens/phrase_study_screen.dart';
 import 'package:project_sralanh/theme/app_theme.dart';
 import 'package:project_sralanh/widgets/blurred_sralanh_top_bar.dart';
+import 'package:project_sralanh/widgets/phrase_bookmark_button.dart';
 
 class HomeTabScreen extends StatefulWidget {
-  const HomeTabScreen({super.key});
+  const HomeTabScreen({super.key, this.onOpenWordBook});
+
+  /// 하단 탭 없이 홈에서 단어장으로 이동할 때 사용합니다.
+  final VoidCallback? onOpenWordBook;
 
   @override
   State<HomeTabScreen> createState() => _HomeTabScreenState();
@@ -112,6 +116,7 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
                               _QuickActions(
                                 onStudyStart: () =>
                                     _openPhraseStudy(context),
+                                onOpenWordBook: widget.onOpenWordBook,
                               ),
                             ],
                           ),
@@ -257,7 +262,6 @@ class _PhraseOfDayCard extends StatelessWidget {
               children: [
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     DecoratedBox(
                       decoration: BoxDecoration(
@@ -280,6 +284,12 @@ class _PhraseOfDayCard extends StatelessWidget {
                         ),
                       ),
                     ),
+                    const Spacer(),
+                    PhraseBookmarkButton(
+                      phrase: phrase,
+                      iconSize: 26,
+                    ),
+                    const SizedBox(width: 4),
                     Material(
                       color: AppColors.primary,
                       shape: const CircleBorder(),
@@ -366,9 +376,13 @@ class _ChipTag extends StatelessWidget {
 }
 
 class _QuickActions extends StatelessWidget {
-  const _QuickActions({required this.onStudyStart});
+  const _QuickActions({
+    required this.onStudyStart,
+    this.onOpenWordBook,
+  });
 
   final VoidCallback onStudyStart;
+  final VoidCallback? onOpenWordBook;
 
   @override
   Widget build(BuildContext context) {
@@ -437,6 +451,7 @@ class _QuickActions extends StatelessWidget {
                     icon: Icons.menu_book_rounded,
                     label: '단어장',
                     labelColor: AppColors.onSecondaryContainer,
+                    onTap: onOpenWordBook,
                   ),
                 ),
                 Expanded(
@@ -464,6 +479,7 @@ class _SmallActionTile extends StatelessWidget {
     required this.icon,
     required this.label,
     required this.labelColor,
+    this.onTap,
   });
 
   final Color background;
@@ -471,6 +487,7 @@ class _SmallActionTile extends StatelessWidget {
   final IconData icon;
   final String label;
   final Color labelColor;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -480,7 +497,7 @@ class _SmallActionTile extends StatelessWidget {
         borderRadius: BorderRadius.circular(24),
         child: InkWell(
           borderRadius: BorderRadius.circular(24),
-          onTap: () {},
+          onTap: onTap,
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Row(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_sralanh/screens/home_tab_screen.dart';
-import 'package:project_sralanh/screens/saved_words_screen.dart';
+import 'package:project_sralanh/screens/word_book_screen.dart';
 import 'package:project_sralanh/screens/scripture_screen.dart';
 import 'package:project_sralanh/widgets/sralanh_bottom_nav_bar.dart';
 
@@ -33,8 +33,10 @@ class _MainShellScreenState extends State<MainShellScreen> {
             child: IndexedStack(
               index: _tab,
               children: [
-                const HomeTabScreen(),
-                const SavedWordsScreen(),
+                HomeTabScreen(
+                  onOpenWordBook: () => setState(() => _tab = 1),
+                ),
+                const WordBookScreen(),
                 const ScriptureScreen(),
               ],
             ),

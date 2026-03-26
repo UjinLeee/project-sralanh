@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:project_sralanh/models/phrase.dart';
 import 'package:project_sralanh/theme/app_theme.dart';
+import 'package:project_sralanh/widgets/phrase_bookmark_button.dart';
 
 /// Layout helpers: spacing/fonts scale with the shortest logical side; card
 /// height is capped using viewport so 4:5 cards do not blow past small screens.
@@ -434,6 +435,14 @@ class _StudyCard extends StatelessWidget {
                             color: AppColors.onSecondaryContainer,
                             size: iconD * 0.52,
                           ),
+                        ),
+                      ),
+                      Positioned(
+                        top: 0,
+                        right: 0,
+                        child: PhraseBookmarkButton(
+                          phrase: phrase,
+                          iconSize: (22 * s).clamp(18.0, 26.0),
                         ),
                       ),
                       Padding(
