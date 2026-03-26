@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sralanh — 학습 완료 축하 연출 (3안)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Kantumruy+Pro:wght@400;700&family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* design_system_showcase_final.html 과 동일 토큰 */
+        :root {
+            --font-ko-title: 'Gowun Dodum', 'Apple SD Gothic Neo', sans-serif;
+            --font-ko-body: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
+            --primary: #136964;
+            --on-primary: #FFFFFF;
+            --primary-container: #80CBC4;
+            --on-primary-container: #005652;
+            --secondary: #7B5549;
+            --secondary-container: #FFCCBC;
+            --on-secondary-container: #7A5448;
+            --tertiary-container: #FBAA8F;
+            --church-gold: #B8944A;
+            --church-gold-soft: rgba(184, 148, 74, 0.35);
+            --surface: #F3FAFF;
+            --surface-container-low: #E6F6FF;
+            --on-surface: #071E27;
+            --on-surface-variant: #3F4947;
+            --outline-variant: #BEC9C7;
+            --primary-fixed: #A4F0E9;
+            --secondary-fixed: #FFDBD0;
+            --accent-teal: #0D9488;
+            --accent-teal-surface: rgba(204, 251, 241, 0.5);
+            --glass-mint: rgba(240, 253, 250, 0.82);
+            --title-slate: #1E293B;
+            --muted-slate: #64748B;
+            --shadow-soft: rgba(7, 30, 39, 0.04);
+            --border-subtle: rgba(190, 201, 199, 0.15);
+            --bg-page: #FFFFFF;
+            --bg-card: #FFFFFF;
+        }
+
+        [data-theme="dark"] {
+            --bg-page: #0C1215;
+            --bg-card: #151D22;
+            --on-surface: #E8F1F5;
+            --on-surface-variant: #9AA8A6;
+            --surface-container-low: #1A2529;
+            --outline-variant: #3D4A48;
+            --primary: #5EC4B8;
+            --primary-container: #2A5C56;
+            --on-primary-container: #A4F0E9;
+            --secondary-container: #4A3832;
+            --on-secondary-container: #FFCCBC;
+            --title-slate: #E8EEF2;
+            --muted-slate: #8B9AAA;
+            --glass-mint: rgba(15, 30, 28, 0.88);
+            --shadow-soft: rgba(0, 0, 0, 0.35);
+            --border-subtle: rgba(255, 255, 255, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg-page);
+            color: var(--on-surface);
+            font-family: var(--font-ko-body);
+            padding-bottom: 64px;
+            transition: background .35s, color .35s;
+        }
+
+        .header {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--outline-variant);
+            padding: 16px 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 200;
+            backdrop-filter: blur(12px);
+        }
+
+        .header-title {
+            font-family: var(--font-ko-title);
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .header-sub {
+            font-size: 11px;
+            color: var(--on-surface-variant);
+            margin-top: 2px;
+        }
+
+        .toggle-group {
+            display: flex;
+            background: var(--surface-container-low);
+            border-radius: 999px;
+            padding: 4px;
+        }
+
+        .toggle-btn {
+            border: none;
+            background: transparent;
+            padding: 7px 14px;
+            border-radius: 999px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--muted-slate);
+            font-family: inherit;
+        }
+
+        .toggle-btn.active {
+            background: var(--bg-card);
+            color: var(--accent-teal);
+            box-shadow: 0 2px 8px var(--shadow-soft);
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 32px 28px;
+        }
+
+        .intro {
+            margin-bottom: 40px;
+        }
+
+        .intro h1 {
+            font-family: var(--font-ko-title);
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--on-surface);
+            margin-bottom: 8px;
+        }
+
+        .intro p {
+            font-size: 14px;
+            color: var(--on-surface-variant);
+            line-height: 1.55;
+            max-width: 720px;
+        }
+
+        .section {
+            background: var(--bg-card);
+            border: 1px solid var(--outline-variant);
+            border-radius: 24px;
+            padding: 28px;
+            margin-bottom: 24px;
+        }
+
+        [data-theme="dark"] .section {
+            border-color: rgba(255, 255, 255, 0.06);
+        }
+
+        .section-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .1em;
+            color: var(--on-surface-variant);
+            margin-bottom: 8px;
+        }
+
+        .section-label span {
+            background: var(--surface-container-low);
+            border-radius: 8px;
+            padding: 2px 10px;
+        }
+
+        .section h2 {
+            font-family: var(--font-ko-title);
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .section-desc {
+            font-size: 13px;
+            color: var(--on-surface-variant);
+            line-height: 1.5;
+            margin-bottom: 20px;
+            max-width: 680px;
+        }
+
+        .replay-btn {
+            margin-bottom: 16px;
+            padding: 10px 20px;
+            border-radius: 999px;
+            border: none;
+            background: var(--accent-teal);
+            color: #fff;
+            font-family: var(--font-ko-body);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(13, 148, 136, 0.35);
+        }
+
+        .replay-btn:hover {
+            filter: brightness(1.05);
+        }
+
+        /* 공통 데모 스테이지 (모바일 프레임 느낌) */
+        .demo-stage {
+            position: relative;
+            width: 100%;
+            max-width: 360px;
+            height: 420px;
+            margin: 0 auto;
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid var(--border-subtle);
+            box-shadow: 0 20px 40px var(--shadow-soft);
+            background: var(--bg-page);
+        }
+
+        /* —— 안 1: 글래스 오버레이 + 컨페티 (교회·말씀 학습 버전) —— */
+        .c1-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            backdrop-filter: blur(20px);
+            background:
+                radial-gradient(ellipse 120% 80% at 50% -20%,
+                    rgba(164, 240, 233, 0.45) 0%,
+                    transparent 55%),
+                var(--glass-mint);
+        }
+
+        .c1-card-wrap {
+            position: relative;
+            z-index: 2;
+            border-radius: 24px;
+            padding: 4px;
+            background: linear-gradient(145deg,
+                    rgba(164, 240, 233, 0.6),
+                    rgba(255, 219, 208, 0.5),
+                    rgba(251, 170, 143, 0.28));
+            animation: c1-card-in 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+
+        .c1-card {
+            position: relative;
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 26px 22px 28px;
+            text-align: center;
+            border: 1px solid var(--border-subtle);
+            box-shadow: 0 20px 40px var(--shadow-soft);
+            overflow: hidden;
+        }
+
+        /* 은은한 십자 워터마크 (예배·교회 톤) */
+        .c1-card::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 42%;
+            width: 100px;
+            height: 100px;
+            transform: translate(-50%, -50%);
+            background: no-repeat center / contain;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='%23136964' fill-opacity='0.12' d='M28 8h8v18h18v8H36v22h-8V34H10v-8h18V8z'/%3E%3C/svg%3E");
+            opacity: 1;
+            pointer-events: none;
+        }
+
+        [data-theme="dark"] .c1-card::before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='%235EC4B8' fill-opacity='0.14' d='M28 8h8v18h18v8H36v22h-8V34H10v-8h18V8z'/%3E%3C/svg%3E");
+        }
+
+        .c1-card-inner {
+            position: relative;
+            z-index: 1;
+        }
+
+        .c1-badge-row {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 14px;
+            animation: c1-fade-up 0.5s ease 0.1s both;
+        }
+
+        .c1-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 999px;
+            background: var(--secondary-container);
+            color: var(--on-secondary-container);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.4px;
+        }
+
+        .c1-celebrate-icons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin: 0 auto 14px;
+            font-size: 42px;
+            line-height: 1;
+            animation: c1-bounce 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s both;
+            filter: drop-shadow(0 4px 14px rgba(19, 105, 100, 0.18));
+        }
+
+        .c1-celebrate-icons span {
+            display: inline-block;
+        }
+
+        .c1-title {
+            font-family: var(--font-ko-title);
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--title-slate);
+            margin-bottom: 6px;
+            animation: c1-fade-up 0.5s ease 0.2s both;
+        }
+
+        .c1-kh {
+            font-family: 'Kantumruy Pro', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1.35;
+            margin-bottom: 10px;
+            animation: c1-fade-up 0.5s ease 0.32s both;
+        }
+
+        .c1-sub {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--on-surface-variant);
+            line-height: 1.45;
+            animation: c1-fade-up 0.5s ease 0.42s both;
+        }
+
+        .c1-cta {
+            margin-top: 20px;
+            padding: 12px 24px;
+            border-radius: 999px;
+            border: none;
+            background: var(--primary);
+            color: var(--on-primary);
+            font-family: var(--font-ko-body);
+            font-size: 14px;
+            font-weight: 600;
+            animation: c1-fade-up 0.5s ease 0.55s both;
+        }
+
+        .c1-confetti {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .c1-confetti--back {
+            z-index: 1;
+        }
+
+        .c1-confetti--front {
+            z-index: 3;
+        }
+
+        .c1-confetti i {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            top: -12px;
+            left: calc(var(--x) * 1%);
+            opacity: 0;
+            border-radius: 2px;
+            animation: c1-fall 2.4s ease-out var(--d) forwards;
+        }
+
+        .c1-confetti i:nth-child(5n) {
+            background: var(--primary-container);
+        }
+
+        .c1-confetti i:nth-child(5n+1) {
+            background: var(--accent-teal);
+        }
+
+        .c1-confetti i:nth-child(5n+2) {
+            background: var(--secondary-container);
+        }
+
+        .c1-confetti i:nth-child(5n+3) {
+            background: var(--primary-fixed);
+        }
+
+        .c1-confetti i:nth-child(5n+4) {
+            background: var(--tertiary-container);
+        }
+
+        /* 교회 버전: 일부 입자 — 촛불·금빛 (평안·축복 연상) */
+        .c1-confetti i.c1-glow {
+            width: 5px;
+            height: 14px;
+            border-radius: 999px;
+            background: linear-gradient(180deg, #fff6dd, var(--church-gold));
+            box-shadow: 0 0 10px var(--church-gold-soft);
+        }
+
+        .c1-confetti i.c1-mica {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 0 6px rgba(164, 240, 233, 0.9);
+        }
+
+        @keyframes c1-fall {
+            0% {
+                transform: translateY(0) rotate(0deg) scale(1);
+                opacity: 0;
+            }
+
+            8% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(460px) rotate(720deg) scale(0.4);
+                opacity: 0;
+            }
+        }
+
+        @keyframes c1-card-in {
+            from {
+                transform: scale(0.88) translateY(16px);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes c1-fade-up {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes c1-bounce {
+            from {
+                transform: scale(0);
+            }
+
+            to {
+                transform: scale(1);
+            }
+        }
+
+        /* —— 안 2: 링 펄스 + 소프트 블룸 (축복 확산) —— */
+        .c2-stage-inner {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .c2-bloom {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle,
+                    rgba(164, 240, 233, 0.65) 0%,
+                    rgba(255, 219, 208, 0.35) 45%,
+                    transparent 70%);
+            animation: c2-bloom-pulse 2.2s ease-in-out infinite;
+        }
+
+        .c2-ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 2px solid var(--primary-container);
+            opacity: 0;
+            animation: c2-ring-expand 2.5s ease-out infinite;
+        }
+
+        .c2-ring.r1 {
+            width: 80px;
+            height: 80px;
+            animation-delay: 0s;
+        }
+
+        .c2-ring.r2 {
+            width: 80px;
+            height: 80px;
+            animation-delay: 0.5s;
+            border-color: var(--accent-teal);
+        }
+
+        .c2-ring.r3 {
+            width: 80px;
+            height: 80px;
+            animation-delay: 1s;
+            border-color: var(--secondary-container);
+        }
+
+        .c2-sparkle {
+            position: absolute;
+            font-size: 18px;
+            color: var(--accent-teal);
+            opacity: 0;
+            animation: c2-spark 2s ease-in-out infinite;
+        }
+
+        .c2-sparkle.s1 {
+            top: 22%;
+            left: 18%;
+            animation-delay: 0.1s;
+        }
+
+        .c2-sparkle.s2 {
+            top: 28%;
+            right: 16%;
+            animation-delay: 0.6s;
+        }
+
+        .c2-sparkle.s3 {
+            bottom: 26%;
+            left: 22%;
+            animation-delay: 1.1s;
+        }
+
+        .c2-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .c2-title {
+            font-family: var(--font-ko-title);
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--title-slate);
+            animation: c2-title-pop 0.85s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+
+        .c2-kh {
+            font-family: 'Kantumruy Pro', sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1.35;
+            margin-top: 10px;
+            animation: c2-title-pop 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.12s both;
+        }
+
+        .c2-sub {
+            margin-top: 12px;
+            font-size: 13px;
+            color: var(--on-surface-variant);
+            font-weight: 500;
+            animation: c2-title-pop 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.22s both;
+        }
+
+        .c2-badge {
+            display: inline-block;
+            margin-top: 22px;
+            padding: 8px 18px;
+            border-radius: 999px;
+            background: var(--secondary-container);
+            color: var(--on-secondary-container);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.2px;
+            animation: c2-title-pop 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.35s both;
+        }
+
+        @keyframes c2-bloom-pulse {
+
+            0%,
+            100% {
+                transform: scale(0.92);
+                opacity: 0.85;
+            }
+
+            50% {
+                transform: scale(1.12);
+                opacity: 1;
+            }
+        }
+
+        @keyframes c2-ring-expand {
+            0% {
+                transform: scale(0.6);
+                opacity: 0.55;
+            }
+
+            100% {
+                transform: scale(4.2);
+                opacity: 0;
+            }
+        }
+
+        @keyframes c2-spark {
+
+            0%,
+            100% {
+                opacity: 0;
+                transform: scale(0.5) rotate(0deg);
+            }
+
+            35% {
+                opacity: 1;
+                transform: scale(1) rotate(15deg);
+            }
+
+            70% {
+                opacity: 0.6;
+                transform: scale(0.85) rotate(-10deg);
+            }
+        }
+
+        @keyframes c2-title-pop {
+            from {
+                opacity: 0;
+                transform: scale(0.75) translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        /* —— 안 3: 완료 스탬프 + 리본 플래시 —— */
+        .c3-stage-inner {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background: linear-gradient(180deg, var(--surface-container-low) 0%, var(--bg-page) 55%);
+        }
+
+        .c3-ribbon {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg,
+                    var(--primary),
+                    var(--accent-teal),
+                    var(--primary-container));
+            transform: scaleX(0);
+            transform-origin: center;
+            animation: c3-ribbon 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+
+        .c3-seal-wrap {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .c3-seal {
+            width: 112px;
+            height: 112px;
+            border-radius: 50%;
+            border: 4px solid var(--primary);
+            background: var(--bg-card);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow:
+                0 0 0 6px rgba(164, 240, 233, 0.4),
+                0 16px 32px var(--shadow-soft);
+            animation: c3-stamp 0.75s cubic-bezier(0.34, 1.4, 0.64, 1) both;
+        }
+
+        .c3-seal span {
+            font-family: var(--font-ko-title);
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: -0.02em;
+        }
+
+        .c3-title {
+            font-family: var(--font-ko-title);
+            font-size: 21px;
+            font-weight: 700;
+            color: var(--title-slate);
+            text-align: center;
+            animation: c3-fade 0.5s ease 0.45s both;
+        }
+
+        .c3-kh {
+            font-family: 'Kantumruy Pro', sans-serif;
+            font-size: 19px;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1.35;
+            margin-top: 8px;
+            text-align: center;
+            animation: c3-fade 0.5s ease 0.55s both;
+        }
+
+        .c3-flash {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: radial-gradient(circle at 50% 42%,
+                    rgba(128, 203, 196, 0.35) 0%,
+                    transparent 55%);
+            opacity: 0;
+            animation: c3-flash-anim 0.9s ease-out 0.2s both;
+        }
+
+        @keyframes c3-ribbon {
+            to {
+                transform: scaleX(1);
+            }
+        }
+
+        @keyframes c3-stamp {
+            0% {
+                transform: rotate(-28deg) scale(1.85);
+                opacity: 0;
+            }
+
+            55% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: rotate(0deg) scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes c3-fade {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes c3-flash-anim {
+            0% {
+                opacity: 0.9;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        .note-box {
+            margin-top: 16px;
+            padding: 14px 16px;
+            border-radius: 16px;
+            background: var(--surface-container-low);
+            font-size: 12px;
+            color: var(--on-surface-variant);
+            line-height: 1.5;
+        }
+
+        .note-box strong {
+            color: var(--on-surface);
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <div>
+            <div class="header-title">학습 완료 축하 · 컨셉 3안</div>
+            <div class="header-sub">design_system_showcase_final.html 토큰 정렬 · Flutter 오버레이 구현 참고용</div>
+        </div>
+        <div class="toggle-group" role="group" aria-label="테마">
+            <button type="button" class="toggle-btn active" data-theme-btn="light">라이트</button>
+            <button type="button" class="toggle-btn" data-theme-btn="dark">다크</button>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="intro">
+            <h1>학습 세션 종료 시 ‘축복 터짐’ 연출</h1>
+            <p>
+                PhraseOfDayCard의 그라데이션 글로우, SavedWordsOverview 카드 섀도, 글래스 톱바 색역을 그대로 쓰고
+                메시지 위계는 <strong>한글 제목 (Gowun Dodum)</strong> → <strong>크메르 한 줄 (Kantumruy Pro, height 1.35+)</strong> →
+                보조 한글 (Noto Sans KR) 순으로 맞춘 프로토타입입니다. 각 안 아래 <strong>다시 재생</strong>으로 키프레임을 다시 볼 수 있습니다.
+            </p>
+        </div>
+
+        <!-- 안 1 · 글래스 + 컨페티 -->
+        <section class="section" id="concept-1">
+            <div class="section-label"><span>안 1</span> 글래스 오버레이 · 컨페티</div>
+            <h2>학습 완료 축하 카드</h2>
+            <p class="section-desc">
+                <code>Overlay</code>·글래스 위 카드에 <strong>십자 워터마크</strong>(카드 내부)는 유지하고, 메시지는 일반 학습 완료 톤으로
+                구성했습니다. 컨페티는 <strong>카드 뒤 + 카드 앞</strong> 이중 레이어이며 <code>pointer-events: none</code>으로
+                하단 CTA 탭이 유지됩니다.
+            </p>
+            <button type="button" class="replay-btn" data-replay="c1">다시 재생</button>
+            <div class="demo-stage" id="stage-c1">
+                <div class="c1-overlay">
+                    <div class="c1-confetti c1-confetti--back" aria-hidden="true"></div>
+                    <div class="c1-card-wrap">
+                        <div class="c1-card">
+                            <div class="c1-card-inner">
+                                <div class="c1-badge-row">
+                                    <span class="c1-badge">학습 완료</span>
+                                </div>
+                                <div class="c1-celebrate-icons" aria-hidden="true">
+                                    <span>🎉</span>
+                                </div>
+                                <div class="c1-title">수고하셨습니다</div>
+                                <div class="c1-kh">ល្អណាស់!</div>
+                                <div class="c1-sub">조금씩 쌓이는 게 가장 큰 성장이에요.<br>다음에 또 만나요 :)</div>
+                                <button type="button" class="c1-cta">홈으로 돌아가기</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="c1-confetti c1-confetti--front" aria-hidden="true"></div>
+                </div>
+            </div>
+            <div class="note-box">
+                <strong>느낌:</strong> 폭죽·하트로 잔치감을 주고, 멘트는 부담 없는 격려 톤. CTA는 네비게이션에 맞춰
+                「홈으로 돌아가기」로 두었으며, 「닫기」「계속하기」 등으로 바꿔 쓰면 됩니다.
+            </div>
+        </section>
+
+        <!-- 안 2 -->
+        <section class="section" id="concept-2">
+            <div class="section-label"><span>안 2</span> 링 펄스 · 소프트 블룸</div>
+            <h2>은혜·축복이 퍼지는 듯한 잔잔한 연출</h2>
+            <p class="section-desc">
+                중앙에서 <code>primary-fixed</code> / <code>secondary-fixed</code> 혼합의 글로우가 숨 쉬듯 박동하고,
+                동심원이 퍼져 나갑니다. 텍스트는 살짝 스프링같이 등장. 앱 톤에 맞는 <strong>덜 시끄러운</strong> 완료감입니다.
+                Flutter: 다중 <code>AnimatedBuilder</code> 또는 <code>TweenAnimationBuilder</code>로 scale·opacity 스택.
+            </p>
+            <button type="button" class="replay-btn" data-replay="c2">다시 재생</button>
+            <div class="demo-stage" id="stage-c2">
+                <div class="c2-stage-inner" id="c2-inner">
+                    <div class="c2-bloom" aria-hidden="true"></div>
+                    <div class="c2-ring r1" aria-hidden="true"></div>
+                    <div class="c2-ring r2" aria-hidden="true"></div>
+                    <div class="c2-ring r3" aria-hidden="true"></div>
+                    <span class="c2-sparkle s1" aria-hidden="true">✦</span>
+                    <span class="c2-sparkle s2" aria-hidden="true">✦</span>
+                    <span class="c2-sparkle s3" aria-hidden="true">✦</span>
+                    <div class="c2-content">
+                        <div class="c2-title">오늘도 한 걸음!</div>
+                        <div class="c2-kh">សូមឲ្យព្រះអរព្រះជយោ</div>
+                        <div class="c2-sub">학습을 완료했습니다. 평안한 하루 되세요.</div>
+                        <div class="c2-badge">LESSON COMPLETE</div>
+                    </div>
+                </div>
+            </div>
+            <div class="note-box">
+                <strong>느낌:</strong> 예배·묵상 앱과도 잘 섞이는 <strong>영적·온화한</strong> 완료 연출.
+            </div>
+        </section>
+
+        <!-- 안 3 -->
+        <section class="section" id="concept-3">
+            <div class="section-label"><span>안 3</span> 완료 스탬프 · 리본 플래시</div>
+            <h2>도장 찍히는 쾌감 + 짧은 피드백</h2>
+            <p class="section-desc">
+                상단 컬러 리본이 펼쳐지고, 원형 도장이 회전하며 내려앉습니다. 짧은 라디얼 플래시로 ‘착!’ 하는 순간을 강조.
+                Flutter: <code>RotationTransition</code> + <code>ScaleTransition</code> (Curves.elasticOut) 조합,
+                리본은 <code>Align</code> + <code>FractionallySizedBox</code> width 트윈.
+            </p>
+            <button type="button" class="replay-btn" data-replay="c3">다시 재생</button>
+            <div class="demo-stage" id="stage-c3">
+                <div class="c3-stage-inner" id="c3-inner">
+                    <div class="c3-ribbon" aria-hidden="true"></div>
+                    <div class="c3-flash" aria-hidden="true"></div>
+                    <div class="c3-seal-wrap">
+                        <div class="c3-seal"><span>완료</span></div>
+                    </div>
+                    <div class="c3-title">잘 하셨어요</div>
+                    <div class="c3-kh">អរគុណច្រើនៗ</div>
+                </div>
+            </div>
+            <div class="note-box">
+                <strong>느낌:</strong> 게임 미션 클리어 · 투두 체크처럼 <strong>성취감</strong>이 바로 전달됩니다.
+            </div>
+        </section>
+    </div>
+
+    <script>
+        (function () {
+            var root = document.documentElement;
+            document.querySelectorAll('[data-theme-btn]').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    var t = btn.getAttribute('data-theme-btn');
+                    document.querySelectorAll('[data-theme-btn]').forEach(function (b) {
+                        b.classList.toggle('active', b.getAttribute('data-theme-btn') === t);
+                    });
+                    root.setAttribute('data-theme', t === 'dark' ? 'dark' : '');
+                });
+            });
+
+            function fillConfettiLayer(container, count) {
+                if (!container) return;
+                container.innerHTML = '';
+                for (var i = 0; i < count; i++) {
+                    var el = document.createElement('i');
+                    el.style.setProperty('--x', String(5 + Math.random() * 90));
+                    el.style.setProperty('--d', (Math.random() * 0.45).toFixed(2) + 's');
+                    var m = i % 11;
+                    if (m === 0) el.className = 'c1-glow';
+                    else if (m === 1 || m === 2) el.className = 'c1-mica';
+                    container.appendChild(el);
+                }
+            }
+
+            function buildC1Confetti(overlay) {
+                fillConfettiLayer(overlay.querySelector('.c1-confetti--back'), 26);
+                fillConfettiLayer(overlay.querySelector('.c1-confetti--front'), 28);
+            }
+
+            function replayC1() {
+                var stage = document.getElementById('stage-c1');
+                var overlay = stage.querySelector('.c1-overlay');
+                var clone = overlay.cloneNode(true);
+                overlay.parentNode.replaceChild(clone, overlay);
+                buildC1Confetti(clone);
+            }
+
+            function replayC2() {
+                var inner = document.getElementById('c2-inner');
+                var stage = document.getElementById('stage-c2');
+                inner.remove();
+                stage.insertAdjacentHTML('afterbegin',
+                    '<div class="c2-stage-inner" id="c2-inner">' +
+                    '<div class="c2-bloom" aria-hidden="true"></div>' +
+                    '<div class="c2-ring r1" aria-hidden="true"></div>' +
+                    '<div class="c2-ring r2" aria-hidden="true"></div>' +
+                    '<div class="c2-ring r3" aria-hidden="true"></div>' +
+                    '<span class="c2-sparkle s1" aria-hidden="true">✦</span>' +
+                    '<span class="c2-sparkle s2" aria-hidden="true">✦</span>' +
+                    '<span class="c2-sparkle s3" aria-hidden="true">✦</span>' +
+                    '<div class="c2-content">' +
+                    '<div class="c2-title">오늘도 한 걸음!</div>' +
+                    '<div class="c2-kh">សូមឲ្យព្រះអរព្រះជយោ</div>' +
+                    '<div class="c2-sub">학습을 완료했습니다. 평안한 하루 되세요.</div>' +
+                    '<div class="c2-badge">LESSON COMPLETE</div>' +
+                    '</div></div>');
+            }
+
+            function replayC3() {
+                var inner = document.getElementById('c3-inner');
+                var stage = document.getElementById('stage-c3');
+                inner.remove();
+                stage.insertAdjacentHTML('afterbegin',
+                    '<div class="c3-stage-inner" id="c3-inner">' +
+                    '<div class="c3-ribbon" aria-hidden="true"></div>' +
+                    '<div class="c3-flash" aria-hidden="true"></div>' +
+                    '<div class="c3-seal-wrap"><div class="c3-seal"><span>완료</span></div></div>' +
+                    '<div class="c3-title">잘 하셨어요</div>' +
+                    '<div class="c3-kh">អរគុណច្រើនៗ</div>' +
+                    '</div>');
+            }
+
+            document.querySelector('[data-replay="c1"]').addEventListener('click', replayC1);
+            document.querySelector('[data-replay="c2"]').addEventListener('click', replayC2);
+            document.querySelector('[data-replay="c3"]').addEventListener('click', replayC3);
+
+            buildC1Confetti(document.querySelector('#stage-c1 .c1-overlay'));
+        })();
+    </script>
+</body>
+
+</html>

@@ -45,6 +45,8 @@
             --bg-page: #FFFFFF;
             --bg-card: #FFFFFF;
             --border-subtle: rgba(190, 201, 199, 0.15);
+            --church-gold: #B8944A;
+            --church-gold-soft: rgba(184, 148, 74, 0.35);
         }
 
         [data-theme="dark"] {
@@ -987,6 +989,302 @@
         [data-theme="dark"] .liturgy-pron-panel:not(.liturgy-pron-panel--peach) .liturgy-pron-body {
             color: var(--on-surface);
         }
+
+        /* —— 14 · StudyCompleteOverlay (안 1: 글래스 + 컨페티) —— */
+        .study-complete-replay {
+            margin-bottom: 16px;
+            padding: 10px 20px;
+            border-radius: 999px;
+            border: none;
+            background: var(--accent-teal);
+            color: #fff;
+            font-family: var(--font-ko-body);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(13, 148, 136, 0.35);
+        }
+
+        .study-complete-replay:hover {
+            filter: brightness(1.05);
+        }
+
+        .study-complete-demo-stage {
+            position: relative;
+            width: 100%;
+            max-width: 360px;
+            height: 420px;
+            margin: 0 auto;
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid var(--border-subtle);
+            box-shadow: 0 20px 40px var(--shadow-soft);
+            background: var(--bg-page);
+        }
+
+        .c1-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            backdrop-filter: blur(20px);
+            background:
+                radial-gradient(ellipse 120% 80% at 50% -20%,
+                    rgba(164, 240, 233, 0.45) 0%,
+                    transparent 55%),
+                var(--glass-mint);
+        }
+
+        .c1-card-wrap {
+            position: relative;
+            z-index: 2;
+            border-radius: 24px;
+            padding: 4px;
+            background: linear-gradient(145deg,
+                    rgba(164, 240, 233, 0.6),
+                    rgba(255, 219, 208, 0.5),
+                    rgba(251, 170, 143, 0.28));
+            animation: c1-card-in 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+
+        .c1-card {
+            position: relative;
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 26px 22px 28px;
+            text-align: center;
+            border: 1px solid var(--border-subtle);
+            box-shadow: 0 20px 40px var(--shadow-soft);
+            overflow: hidden;
+        }
+
+        .c1-card::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 42%;
+            width: 100px;
+            height: 100px;
+            transform: translate(-50%, -50%);
+            background: no-repeat center / contain;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='%23136964' fill-opacity='0.12' d='M28 8h8v18h18v8H36v22h-8V34H10v-8h18V8z'/%3E%3C/svg%3E");
+            opacity: 1;
+            pointer-events: none;
+        }
+
+        [data-theme="dark"] .c1-card::before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='%235EC4B8' fill-opacity='0.14' d='M28 8h8v18h18v8H36v22h-8V34H10v-8h18V8z'/%3E%3C/svg%3E");
+        }
+
+        .c1-card-inner {
+            position: relative;
+            z-index: 1;
+        }
+
+        .c1-badge-row {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 14px;
+            animation: c1-fade-up 0.5s ease 0.1s both;
+        }
+
+        .c1-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 999px;
+            background: var(--secondary-container);
+            color: var(--on-secondary-container);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.4px;
+        }
+
+        .c1-celebrate-icons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin: 0 auto 14px;
+            font-size: 42px;
+            line-height: 1;
+            animation: c1-bounce 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s both;
+            filter: drop-shadow(0 4px 14px rgba(19, 105, 100, 0.18));
+        }
+
+        .c1-celebrate-icons span {
+            display: inline-block;
+        }
+
+        .c1-title {
+            font-family: var(--font-ko-title);
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--title-slate);
+            margin-bottom: 6px;
+            animation: c1-fade-up 0.5s ease 0.2s both;
+        }
+
+        .c1-kh {
+            font-family: 'Kantumruy Pro', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1.35;
+            margin-bottom: 10px;
+            animation: c1-fade-up 0.5s ease 0.32s both;
+        }
+
+        .c1-sub {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--on-surface-variant);
+            line-height: 1.45;
+            animation: c1-fade-up 0.5s ease 0.42s both;
+        }
+
+        .c1-cta {
+            margin-top: 20px;
+            padding: 12px 24px;
+            border-radius: 999px;
+            border: none;
+            background: var(--primary);
+            color: var(--on-primary);
+            font-family: var(--font-ko-body);
+            font-size: 14px;
+            font-weight: 600;
+            animation: c1-fade-up 0.5s ease 0.55s both;
+            cursor: pointer;
+        }
+
+        .c1-confetti {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .c1-confetti--back {
+            z-index: 1;
+        }
+
+        .c1-confetti--front {
+            z-index: 3;
+        }
+
+        .c1-confetti i {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            top: -12px;
+            left: calc(var(--x) * 1%);
+            opacity: 0;
+            border-radius: 2px;
+            animation: c1-fall 2.4s ease-out var(--d) forwards;
+        }
+
+        .c1-confetti i:nth-child(5n) {
+            background: var(--primary-container);
+        }
+
+        .c1-confetti i:nth-child(5n+1) {
+            background: var(--accent-teal);
+        }
+
+        .c1-confetti i:nth-child(5n+2) {
+            background: var(--secondary-container);
+        }
+
+        .c1-confetti i:nth-child(5n+3) {
+            background: var(--primary-fixed);
+        }
+
+        .c1-confetti i:nth-child(5n+4) {
+            background: var(--tertiary-container);
+        }
+
+        .c1-confetti i.c1-glow {
+            width: 5px;
+            height: 14px;
+            border-radius: 999px;
+            background: linear-gradient(180deg, #fff6dd, var(--church-gold));
+            box-shadow: 0 0 10px var(--church-gold-soft);
+        }
+
+        .c1-confetti i.c1-mica {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 0 6px rgba(164, 240, 233, 0.9);
+        }
+
+        @keyframes c1-fall {
+            0% {
+                transform: translateY(0) rotate(0deg) scale(1);
+                opacity: 0;
+            }
+
+            8% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(460px) rotate(720deg) scale(0.4);
+                opacity: 0;
+            }
+        }
+
+        @keyframes c1-card-in {
+            from {
+                transform: scale(0.88) translateY(16px);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes c1-fade-up {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes c1-bounce {
+            from {
+                transform: scale(0);
+            }
+
+            to {
+                transform: scale(1);
+            }
+        }
+
+        .study-complete-note {
+            margin-top: 16px;
+            padding: 14px 16px;
+            border-radius: 16px;
+            background: var(--surface-container-low);
+            font-size: 12px;
+            color: var(--on-surface-variant);
+            line-height: 1.5;
+        }
+
+        .study-complete-note strong {
+            color: var(--on-surface);
+        }
     </style>
 </head>
 
@@ -1374,6 +1672,42 @@
                 동일한 발음 문자열·타이포로 배경 토큰만 바꿉니다. 제품에서는 비교 후 한 가지로 통일하면 됩니다.
             </p>
         </div>
+
+        <div class="section">
+            <div class="section-label">14 · <span>StudyCompleteOverlay</span> — 학습 완료 축하 (안 1)</div>
+            <p style="margin:-8px 0 16px;font-size:13px;color:var(--on-surface-variant);line-height:1.6;">
+                Phrase 학습 세션 종료 시 <code>Overlay</code> + 글래스 + 이중 컨페티 레이어 프로토타입입니다.
+                카드 내부 십자 워터마크, <strong>Gowun Dodum</strong> 제목 · <strong>Kantumruy Pro</strong> 한 줄(줄간격 1.35+) ·
+                Noto 본문 순서를 따릅니다. 상세·안 2·3은 <code>design/study_completion_celebration_concepts.html</code>을 참고하세요.
+            </p>
+            <button type="button" class="study-complete-replay" id="showcase-study-complete-replay">다시 재생</button>
+            <div class="study-complete-demo-stage" id="showcase-study-complete-stage">
+                <div class="c1-overlay">
+                    <div class="c1-confetti c1-confetti--back" aria-hidden="true"></div>
+                    <div class="c1-card-wrap">
+                        <div class="c1-card">
+                            <div class="c1-card-inner">
+                                <div class="c1-badge-row">
+                                    <span class="c1-badge">학습 완료</span>
+                                </div>
+                                <div class="c1-celebrate-icons" aria-hidden="true">
+                                    <span>🎉</span>
+                                </div>
+                                <div class="c1-title">수고하셨습니다</div>
+                                <div class="c1-kh">ល្អណាស់!</div>
+                                <div class="c1-sub">조금씩 쌓이는 게 가장 큰 성장이에요.<br>다음에 또 만나요 :)</div>
+                                <button type="button" class="c1-cta">홈으로 돌아가기</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="c1-confetti c1-confetti--front" aria-hidden="true"></div>
+                </div>
+            </div>
+            <p class="study-complete-note">
+                <strong>구현 메모:</strong> 컨페티는 카드 뒤(<code>z-index: 1</code>)·앞(<code>z-index: 3</code>) 두 겹이며
+                <code>pointer-events: none</code>으로 CTA는 탭 가능합니다. Flutter에서는 <code>Stack</code> + <code>BackdropFilter</code>로 대응합니다.
+            </p>
+        </div>
     </div>
 
     <script>
@@ -1382,6 +1716,45 @@
             document.querySelectorAll('.toggle-btn').forEach(function (b) { b.classList.remove('active'); });
             btn.classList.add('active');
         }
+
+        (function initShowcaseStudyComplete() {
+            function fillConfettiLayer(container, count) {
+                if (!container) return;
+                container.innerHTML = '';
+                for (var i = 0; i < count; i++) {
+                    var el = document.createElement('i');
+                    el.style.setProperty('--x', String(5 + Math.random() * 90));
+                    el.style.setProperty('--d', (Math.random() * 0.45).toFixed(2) + 's');
+                    var m = i % 11;
+                    if (m === 0) el.className = 'c1-glow';
+                    else if (m === 1 || m === 2) el.className = 'c1-mica';
+                    container.appendChild(el);
+                }
+            }
+
+            function buildC1Confetti(overlay) {
+                fillConfettiLayer(overlay.querySelector('.c1-confetti--back'), 26);
+                fillConfettiLayer(overlay.querySelector('.c1-confetti--front'), 28);
+            }
+
+            function replayShowcaseStudyComplete() {
+                var stage = document.getElementById('showcase-study-complete-stage');
+                if (!stage) return;
+                var overlay = stage.querySelector('.c1-overlay');
+                if (!overlay) return;
+                var clone = overlay.cloneNode(true);
+                overlay.parentNode.replaceChild(clone, overlay);
+                buildC1Confetti(clone);
+            }
+
+            var replayBtn = document.getElementById('showcase-study-complete-replay');
+            if (replayBtn) replayBtn.addEventListener('click', replayShowcaseStudyComplete);
+            var rootStage = document.getElementById('showcase-study-complete-stage');
+            if (rootStage) {
+                var firstOverlay = rootStage.querySelector('.c1-overlay');
+                if (firstOverlay) buildC1Confetti(firstOverlay);
+            }
+        })();
     </script>
 </body>
 
