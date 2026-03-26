@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sralanh — Showcase (한글: SUIT + Pretendard)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;700&family=SUIT:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --font-ko-title: 'SUIT', system-ui, sans-serif;
+            --font-ko-body: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            --primary: #136964;
+            --on-primary: #FFFFFF;
+            --primary-container: #80CBC4;
+            --on-primary-container: #005652;
+            --secondary: #7B5549;
+            --on-secondary: #FFFFFF;
+            --secondary-container: #FFCCBC;
+            --on-secondary-container: #7A5448;
+            --tertiary-container: #FBAA8F;
+            --on-tertiary-container: #773C28;
+            --surface: #F3FAFF;
+            --surface-container: #DBF1FE;
+            --surface-container-low: #E6F6FF;
+            --surface-container-high: #D5ECF8;
+            --surface-container-highest: #CFE6F2;
+            --on-surface: #071E27;
+            --on-surface-variant: #3F4947;
+            --outline-variant: #BEC9C7;
+            --primary-fixed: #A4F0E9;
+            --secondary-fixed: #FFDBD0;
+            --accent-teal: #0D9488;
+            --accent-teal-surface: rgba(204, 251, 241, 0.5);
+            --accent-teal-border: rgba(204, 251, 241, 0.35);
+            --glass-mint: rgba(240, 253, 250, 0.82);
+            --title-slate: #1E293B;
+            --muted-slate: #64748B;
+            --footer-muted: #6F7977;
+            --shadow-soft: rgba(7, 30, 39, 0.04);
+            --shadow-nav: rgba(7, 30, 39, 0.06);
+            --error: #BA1A1A;
+            --bg-page: #FFFFFF;
+            --bg-card: #FFFFFF;
+            --border-subtle: rgba(190, 201, 199, 0.15);
+        }
+
+        [data-theme="dark"] {
+            --bg-page: #0C1215;
+            --bg-card: #151D22;
+            --on-surface: #E8F1F5;
+            --on-surface-variant: #9AA8A6;
+            --surface: #0F1619;
+            --surface-container-low: #1A2529;
+            --surface-container: #1E2A30;
+            --surface-container-high: #243038;
+            --surface-container-highest: #2A3840;
+            --outline-variant: #3D4A48;
+            --primary: #5EC4B8;
+            --primary-container: #2A5C56;
+            --on-primary-container: #A4F0E9;
+            --secondary-container: #4A3832;
+            --on-secondary-container: #FFCCBC;
+            --title-slate: #E8EEF2;
+            --muted-slate: #8B9AAA;
+            --glass-mint: rgba(15, 30, 28, 0.88);
+            --shadow-soft: rgba(0, 0, 0, 0.35);
+            --shadow-nav: rgba(0, 0, 0, 0.45);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg-page);
+            color: var(--on-surface);
+            font-family: var(--font-ko-body);
+            transition: background .35s, color .35s;
+            padding-bottom: 80px;
+        }
+
+        .font-display {
+            font-family: var(--font-ko-title);
+        }
+
+        .font-khmer {
+            font-family: 'Kantumruy Pro', sans-serif;
+        }
+
+        /* Header */
+        .header {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--outline-variant);
+            padding: 16px 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(12px);
+        }
+
+        .header-title {
+            font-family: var(--font-ko-title);
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .header-sub {
+            font-size: 11px;
+            color: var(--on-surface-variant);
+            margin-top: 1px;
+        }
+
+        .toggle-group {
+            display: flex;
+            background: var(--surface-container-low);
+            border-radius: 999px;
+            padding: 4px;
+            gap: 2px;
+        }
+
+        .toggle-btn {
+            border: none;
+            background: transparent;
+            padding: 7px 14px;
+            border-radius: 999px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--muted-slate);
+            transition: all .2s;
+            font-family: inherit;
+        }
+
+        .toggle-btn.active {
+            background: var(--bg-card);
+            color: var(--accent-teal);
+            box-shadow: 0 2px 8px var(--shadow-soft);
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 36px 28px;
+        }
+
+        .layer-title {
+            font-family: var(--font-ko-title);
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--on-surface);
+            margin: 48px 0 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .layer-title:first-of-type {
+            margin-top: 0;
+        }
+
+        .layer-sub {
+            font-size: 13px;
+            color: var(--on-surface-variant);
+            margin-bottom: 28px;
+            font-weight: 500;
+        }
+
+        .section {
+            background: var(--bg-card);
+            border: 1px solid var(--outline-variant);
+            border-radius: 24px;
+            padding: 28px;
+            margin-bottom: 20px;
+        }
+
+        [data-theme="dark"] .section {
+            border-color: rgba(255, 255, 255, 0.06);
+        }
+
+        .section-label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            color: var(--on-surface-variant);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-label span {
+            background: var(--surface-container-low);
+            border-radius: 8px;
+            padding: 2px 10px;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: flex-start;
+        }
+
+        .col {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .state-label {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--on-surface-variant);
+            margin-bottom: 6px;
+        }
+
+        .states-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            align-items: flex-start;
+        }
+
+        .state-col {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 6px;
+        }
+
+        /* —— Tokens: swatches —— */
+        .swatch-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 12px;
+        }
+
+        .swatch {
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--outline-variant);
+        }
+
+        .swatch-color {
+            height: 56px;
+        }
+
+        .swatch-meta {
+            padding: 10px 12px;
+            background: var(--surface-container-low);
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--on-surface-variant);
+        }
+
+        .swatch-meta code {
+            display: block;
+            font-size: 10px;
+            margin-top: 4px;
+            opacity: .85;
+        }
+
+        /* —— Atoms —— */
+        .glass-icon-btn {
+            width: 44px;
+            height: 44px;
+            border: none;
+            border-radius: 999px;
+            background: var(--accent-teal-surface);
+            color: var(--accent-teal);
+            font-size: 22px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform .12s, background .15s;
+        }
+
+        .glass-icon-btn:active {
+            transform: scale(0.94);
+        }
+
+        .primary-fab {
+            width: 64px;
+            height: 64px;
+            border-radius: 999px;
+            border: none;
+            background: var(--primary);
+            color: var(--on-primary);
+            font-size: 28px;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(19, 105, 100, 0.35);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform .15s;
+        }
+
+        .primary-fab:hover {
+            transform: scale(1.04);
+        }
+
+        .chip-tag {
+            display: inline-flex;
+            padding: 8px 16px;
+            border-radius: 999px;
+            background: var(--surface-container-low);
+            font-family: var(--font-ko-body);
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--on-surface-variant);
+        }
+
+        .chip-tag.selected {
+            outline: 2px solid var(--primary);
+            background: rgba(128, 203, 196, 0.25);
+        }
+
+        .prog-wrap {
+            width: 100%;
+            max-width: 420px;
+        }
+
+        .prog-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 12px;
+        }
+
+        .prog-title {
+            font-family: var(--font-ko-title);
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--on-surface);
+        }
+
+        .prog-pct {
+            font-family: var(--font-ko-body);
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .prog-track {
+            height: 16px;
+            border-radius: 999px;
+            background: var(--surface-container-low);
+            overflow: hidden;
+        }
+
+        .prog-fill {
+            height: 100%;
+            width: 85%;
+            border-radius: 999px;
+            background: var(--primary-container);
+            box-shadow: 0 0 20px rgba(128, 203, 196, 0.45);
+        }
+
+        .prog-caption {
+            margin-top: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--on-surface-variant);
+            line-height: 1.5;
+        }
+
+        /* —— Molecules —— */
+        .phrase-glow {
+            position: relative;
+            border-radius: 24px;
+            padding: 4px;
+            background: linear-gradient(135deg,
+                    rgba(164, 240, 233, 0.35),
+                    rgba(255, 219, 208, 0.35));
+        }
+
+        .phrase-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 32px;
+            border: 1px solid var(--border-subtle);
+            box-shadow: 0 20px 40px var(--shadow-soft);
+        }
+
+        .phrase-card-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 24px;
+        }
+
+        .phrase-badge {
+            background: var(--secondary-container);
+            color: var(--on-secondary-container);
+            padding: 6px 16px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.2px;
+        }
+
+        .phrase-khmer {
+            font-family: 'Kantumruy Pro', sans-serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1.25;
+            margin-bottom: 8px;
+        }
+
+        .phrase-ko {
+            font-family: var(--font-ko-body);
+            font-size: 20px;
+            font-weight: 500;
+            color: var(--on-surface-variant);
+        }
+
+        .quick-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            max-width: 480px;
+            align-items: stretch;
+        }
+
+        .quick-main {
+            grid-row: span 2;
+            background: var(--primary);
+            color: var(--on-primary);
+            border-radius: 24px;
+            padding: 24px;
+            border: none;
+            cursor: pointer;
+            text-align: left;
+            box-shadow: 0 8px 24px rgba(19, 105, 100, 0.35);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 200px;
+        }
+
+        .quick-main .sub {
+            font-family: 'Kantumruy Pro', sans-serif;
+            font-size: 12px;
+            opacity: 0.85;
+        }
+
+        .quick-main .title {
+            font-family: var(--font-ko-body);
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .quick-tile {
+            border-radius: 24px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border: none;
+            cursor: pointer;
+            text-align: left;
+            font-family: var(--font-ko-body);
+            font-weight: 700;
+        }
+
+        .quick-tile .icon-wrap {
+            width: 40px;
+            height: 40px;
+            border-radius: 999px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .featured-row {
+            max-width: 520px;
+            background: var(--surface-container-low);
+            border-radius: 24px;
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .featured-thumb {
+            width: 80px;
+            height: 80px;
+            border-radius: 16px;
+            background: var(--primary-container);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+        }
+
+        .featured-kh {
+            font-family: 'Kantumruy Pro', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .featured-ko {
+            font-family: var(--font-ko-body);
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--on-surface);
+        }
+
+        .featured-meta {
+            font-size: 12px;
+            color: var(--on-surface-variant);
+            margin-top: 4px;
+        }
+
+        /* SavedWordsOverview */
+        .saved-panel {
+            max-width: 520px;
+            border: 1px solid var(--border-subtle);
+            border-radius: 24px;
+            padding: 20px 20px 12px;
+            box-shadow: 0 20px 40px var(--shadow-soft);
+        }
+
+        .saved-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .saved-title {
+            font-family: var(--font-ko-title);
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .saved-search {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            border: 1px solid var(--outline-variant);
+            background: var(--surface-container-low);
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .saved-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .saved-item {
+            border: 1px solid rgba(190, 201, 199, 0.12);
+            border-radius: 24px;
+            padding: 16px 18px;
+            margin-bottom: 12px;
+            background: var(--bg-card);
+        }
+
+        .saved-item-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 6px;
+        }
+
+        .saved-item-kh {
+            font-family: 'Kantumruy Pro', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .saved-item-meta {
+            font-size: 11px;
+            color: var(--on-surface-variant);
+        }
+
+        .saved-item-ko {
+            font-size: 15px;
+            color: var(--on-surface);
+            margin-bottom: 10px;
+        }
+
+        .pron-pill {
+            display: inline-block;
+            background: var(--secondary-container);
+            color: var(--on-secondary-container);
+            border-radius: 16px;
+            padding: 10px 18px;
+            box-shadow: 0 3px 8px rgba(122, 84, 72, 0.12);
+        }
+
+        .pron-pill .cap {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 1.6px;
+            opacity: 0.72;
+            margin-bottom: 4px;
+        }
+
+        .pron-pill .body {
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: 0.4px;
+        }
+
+        /* —— Organisms: top bar —— */
+        .demo-topbar {
+            border-radius: 16px;
+            padding: 12px 24px;
+            background: var(--glass-mint);
+            backdrop-filter: blur(24px);
+            box-shadow: 0 20px 40px var(--shadow-soft);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid var(--accent-teal-border);
+            max-width: 560px;
+        }
+
+        .demo-topbar .title {
+            flex: 1;
+            text-align: center;
+            font-family: var(--font-ko-title);
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--title-slate);
+        }
+
+        /* Bottom nav — Sralanh (프로필 탭 없음 · 3탭) */
+        .tabbar-wrap {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .tabbar-sralanh {
+            background: rgba(255, 255, 255, 0.82);
+            backdrop-filter: blur(20px);
+            border-radius: 48px 48px 0 0;
+            padding: 12px 16px 24px;
+            border-top: 1px solid var(--accent-teal-border);
+            box-shadow: 0 -10px 30px var(--shadow-nav);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            max-width: 420px;
+            width: 100%;
+        }
+
+        [data-theme="dark"] .tabbar-sralanh {
+            background: rgba(21, 29, 34, 0.9);
+        }
+
+        .tab-pill {
+            flex: 1;
+            text-align: center;
+            padding: 10px 4px;
+            border-radius: 999px;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            font-family: var(--font-ko-body);
+        }
+
+        .tab-pill.active {
+            background: var(--accent-teal);
+            color: #fff;
+        }
+
+        .tab-pill:not(.active) {
+            color: var(--muted-slate);
+        }
+
+        .tab-pill .ti {
+            font-size: 22px;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .tab-pill .tl {
+            font-size: 8.5px;
+            font-weight: 600;
+            line-height: 1.15;
+            letter-spacing: 0.2px;
+        }
+
+        /* Three-step phrase card */
+        .study-card-wrap {
+            position: relative;
+            max-width: 360px;
+            padding-bottom: 28px;
+        }
+
+        .study-card {
+            background: var(--bg-card);
+            border-radius: 22px;
+            border: 1px solid rgba(190, 201, 199, 0.12);
+            box-shadow: 0 16px 32px var(--shadow-soft);
+            padding: 24px 24px 32px;
+            position: relative;
+        }
+
+        .study-cat-icon {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 44px;
+            height: 44px;
+            border-radius: 999px;
+            background: var(--secondary-container);
+            color: var(--on-secondary-container);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+
+        .study-body {
+            padding-top: 52px;
+            text-align: center;
+        }
+
+        .step-label {
+            font-family: var(--font-ko-body);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 14px;
+        }
+
+        .step-label.ko {
+            color: rgba(123, 85, 73, 0.5);
+        }
+
+        .step-label.km {
+            color: rgba(19, 105, 100, 0.5);
+        }
+
+        .study-korean {
+            font-family: var(--font-ko-title);
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--on-surface);
+            line-height: 1.2;
+            margin-bottom: 16px;
+        }
+
+        .study-pron-wrap {
+            display: inline-block;
+            margin: 8px 0 20px;
+        }
+
+        .study-khmer {
+            font-family: 'Kantumruy Pro', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: rgba(7, 30, 39, 0.9);
+        }
+
+        [data-theme="dark"] .study-khmer {
+            color: rgba(232, 241, 245, 0.92);
+        }
+
+        .study-fab-pos {
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+        }
+
+        .study-footer-demo {
+            margin-top: 32px;
+            max-width: 420px;
+            background: rgba(255, 255, 255, 0.82);
+            backdrop-filter: blur(20px);
+            border-radius: 44px 44px 0 0;
+            border-top: 1px solid var(--accent-teal-border);
+            padding: 20px 20px 28px;
+            box-shadow: 0 -10px 30px var(--shadow-nav);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        [data-theme="dark"] .study-footer-demo {
+            background: rgba(21, 29, 34, 0.92);
+        }
+
+        .footer-prev {
+            text-align: center;
+            color: var(--footer-muted);
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .footer-prev .circle {
+            width: 48px;
+            height: 48px;
+            border-radius: 999px;
+            background: var(--surface-container-low);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 4px;
+            font-size: 20px;
+        }
+
+        .footer-dots {
+            display: flex;
+            gap: 7px;
+            align-items: center;
+        }
+
+        .footer-dot {
+            height: 8px;
+            border-radius: 999px;
+            background: var(--primary);
+            opacity: 0.2;
+        }
+
+        .footer-dot.on {
+            width: 22px;
+            opacity: 1;
+        }
+
+        .footer-dot:not(.on) {
+            width: 8px;
+        }
+
+        .footer-next {
+            background: var(--secondary-container);
+            color: var(--on-secondary-container);
+            border: none;
+            border-radius: 999px;
+            padding: 12px 18px;
+            font-family: var(--font-ko-title);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            cursor: pointer;
+            box-shadow: 0 6px 16px rgba(122, 84, 72, 0.2);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .hint-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            border-radius: 999px;
+            background: var(--surface-container-high);
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--on-surface-variant);
+        }
+
+        .lesson-progress {
+            max-width: 400px;
+        }
+
+        .lesson-row {
+            display: flex;
+            justify-content: space-between;
+            font-family: var(--font-ko-title);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: var(--primary);
+            margin-bottom: 10px;
+            padding: 0 6px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <div>
+            <div class="header-title">Sralanh Design System</div>
+            <div class="header-sub">한글 타이틀 <strong>SUIT</strong> · 본문·캡션 <strong>Pretendard</strong> · 크메르 <strong>Kantumruy Pro</strong> 고정</div>
+        </div>
+        <div class="toggle-group">
+            <button type="button" class="toggle-btn active" onclick="setTheme('light', this)">낮</button>
+            <button type="button" class="toggle-btn" onclick="setTheme('dark', this)">밤</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Tokens -->
+        <div class="layer-title">Tokens</div>
+        <div class="layer-sub">AppColors 및 화면 보조색 (문서 §2.1)</div>
+
+        <div class="section">
+            <div class="section-label">01 · <span>Color palette</span></div>
+            <div class="swatch-grid">
+                <div class="swatch">
+                    <div class="swatch-color" style="background:#136964"></div>
+                    <div class="swatch-meta">primary<code>#136964</code></div>
+                </div>
+                <div class="swatch">
+                    <div class="swatch-color" style="background:#80CBC4"></div>
+                    <div class="swatch-meta">primaryContainer<code>#80CBC4</code></div>
+                </div>
+                <div class="swatch">
+                    <div class="swatch-color" style="background:#7B5549"></div>
+                    <div class="swatch-meta">secondary<code>#7B5549</code></div>
+                </div>
+                <div class="swatch">
+                    <div class="swatch-color" style="background:#FFCCBC"></div>
+                    <div class="swatch-meta">secondaryContainer<code>#FFCCBC</code></div>
+                </div>
+                <div class="swatch">
+                    <div class="swatch-color" style="background:#FBAA8F"></div>
+                    <div class="swatch-meta">tertiaryContainer<code>#FBAA8F</code></div>
+                </div>
+                <div class="swatch">
+                    <div class="swatch-color" style="background:#E6F6FF"></div>
+                    <div class="swatch-meta">surfaceContainerLow<code>#E6F6FF</code></div>
+                </div>
+                <div class="swatch">
+                    <div class="swatch-color" style="background:#0D9488"></div>
+                    <div class="swatch-meta">accentTeal<code>#0D9488</code></div>
+                </div>
+                <div class="swatch">
+                    <div class="swatch-color" style="background:#071E27"></div>
+                    <div class="swatch-meta">onSurface<code>#071E27</code></div>
+                </div>
+            </div>
+            <p style="margin-top:16px;font-size:12px;color:var(--on-surface-variant);line-height:1.6;">
+                radius: 카드 24px · pill 999 · 하단 시트 상단 48px · spacing xs~4xl (4~40dp). 섀도: 카드
+                <code>071E27</code> @ 4%, 네비 상단 <code>071E27</code> @ 6%.
+            </p>
+        </div>
+
+        <div class="section">
+            <div class="section-label">02 · <span>Typography (3 fonts)</span></div>
+            <div class="col" style="gap:20px;">
+                <div>
+                    <div class="state-label">SUIT — 섹션·디스플레이 타이틀</div>
+                    <div class="font-display" style="font-size:22px;font-weight:700;color:var(--on-surface);">오늘의 목표</div>
+                </div>
+                <div>
+                    <div class="state-label">Pretendard — 본문·캡션</div>
+                    <div style="font-size:14px;font-weight:500;color:var(--on-surface-variant);">조금만 더 힘내세요! 오늘의 학습 완료까지 얼마 남지 않았습니다.</div>
+                </div>
+                <div>
+                    <div class="state-label">Kantumruy Pro — 크메르</div>
+                    <div class="font-khmer" style="font-size:32px;font-weight:700;color:var(--primary);">សួស្តី</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Atoms -->
+        <div class="layer-title">Atoms</div>
+        <div class="layer-sub">GlassIconButton · PrimaryFAB · ChipTag · Progress</div>
+
+        <div class="section">
+            <div class="section-label">03 · <span>GlassIconButton</span> + <span>PrimaryFAB</span></div>
+            <div class="states-row">
+                <div class="state-col">
+                    <div class="state-label">메뉴 (틸)</div>
+                    <button type="button" class="glass-icon-btn" aria-label="메뉴">☰</button>
+                </div>
+                <div class="state-col">
+                    <div class="state-label">볼륨 FAB</div>
+                    <button type="button" class="primary-fab" aria-label="재생">🔊</button>
+                </div>
+                <div class="state-col">
+                    <div class="state-label">채팅 FAB (tertiary)</div>
+                    <button type="button" class="primary-fab"
+                        style="background:var(--tertiary-container);color:var(--on-tertiary-container);box-shadow:0 8px 24px rgba(251,170,143,.4);">💬</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-label">04 · <span>ChipTag</span></div>
+            <div class="row">
+                <span class="chip-tag">#인사</span>
+                <span class="chip-tag">#학습</span>
+                <span class="chip-tag selected">#전체</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-label">05 · <span>Today goal progress</span> — 홈</div>
+            <div class="prog-wrap">
+                <div class="prog-header">
+                    <span class="prog-title">오늘의 목표</span>
+                    <span class="prog-pct">85%</span>
+                </div>
+                <div class="prog-track">
+                    <div class="prog-fill"></div>
+                </div>
+                <p class="prog-caption">조금만 더 힘내세요! 오늘의 학습 완료까지 얼마 남지 않았습니다.</p>
+            </div>
+        </div>
+
+        <!-- Molecules -->
+        <div class="layer-title">Molecules</div>
+        <div class="layer-sub">PhraseOfDayCard · QuickActionGrid · FeaturedLesson · SavedWordsOverview</div>
+
+        <div class="section">
+            <div class="section-label">06 · <span>PhraseOfDayCard</span></div>
+            <div class="phrase-glow" style="max-width:420px;">
+                <div class="phrase-card">
+                    <div class="phrase-card-head">
+                        <span class="phrase-badge">오늘의 문장</span>
+                        <button type="button" class="primary-fab" style="width:52px;height:52px;font-size:22px;">🔊</button>
+                    </div>
+                    <div class="phrase-khmer">សួស្តី</div>
+                    <div class="phrase-ko">안녕하세요</div>
+                    <div class="row" style="margin-top:16px;">
+                        <span class="chip-tag">#인사</span>
+                        <span class="chip-tag">#학습</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-label">07 · <span>QuickActionGrid</span></div>
+            <div class="quick-grid">
+                <button type="button" class="quick-main">
+                    <span style="font-size:40px;">▶</span>
+                    <div>
+                        <div class="sub">ចាប់ផ្តើមភ្លាមៗ</div>
+                        <div class="title">학습 시작</div>
+                    </div>
+                </button>
+                <button type="button" class="quick-tile" style="background:var(--secondary-container);color:var(--on-secondary-container);">
+                    <span class="icon-wrap" style="color:var(--secondary);">📖</span>
+                    단어장
+                </button>
+                <button type="button" class="quick-tile" style="background:var(--surface-container-highest);color:var(--on-surface);">
+                    <span class="icon-wrap" style="color:var(--primary);">🕐</span>
+                    기록
+                </button>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-label">08 · <span>FeaturedLessonRow</span></div>
+            <div class="featured-row">
+                <div class="featured-thumb">🏪</div>
+                <div style="flex:1;">
+                    <div class="featured-kh">នៅផ្សារ</div>
+                    <div class="featured-ko">시장 구경하기</div>
+                    <div class="featured-meta">15개 단어 · 5분</div>
+                </div>
+                <span style="color:var(--outline-variant);font-size:22px;">›</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-label">09 · <span>SavedWordsOverview</span> — 저장한 단어 모아보기</div>
+            <div class="saved-panel">
+                <div class="saved-head">
+                    <span class="saved-title">저장한 단어</span>
+                    <button type="button" class="saved-search" aria-label="검색">🔍</button>
+                </div>
+                <div class="saved-chips">
+                    <span class="chip-tag selected">#전체</span>
+                    <span class="chip-tag">#인사</span>
+                    <span class="chip-tag">#어린이</span>
+                    <span class="chip-tag">#교회</span>
+                </div>
+                <div class="saved-item">
+                    <div class="saved-item-top">
+                        <span class="saved-item-kh">សួស្តី</span>
+                        <span class="saved-item-meta">저장됨 · 인사</span>
+                    </div>
+                    <div class="saved-item-ko">안녕하세요</div>
+                    <div class="pron-pill">
+                        <div class="cap">PRONUNCIATION</div>
+                        <div class="body">[ 안녕하세요 ]</div>
+                    </div>
+                </div>
+                <div class="saved-item">
+                    <div class="saved-item-top">
+                        <span class="saved-item-kh">អរគុណ</span>
+                        <span class="saved-item-meta">저장됨 · 인사</span>
+                    </div>
+                    <div class="saved-item-ko">감사합니다</div>
+                    <div class="pron-pill">
+                        <div class="cap">PRONUNCIATION</div>
+                        <div class="body">[ 감사합니다 ]</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Organisms -->
+        <div class="layer-title">Organisms</div>
+        <div class="layer-sub">BlurredTopBar · BottomNavBar(3탭·프로필 탭 없음) · StudyChrome · ThreeStepPhraseLayout</div>
+
+        <div class="section">
+            <div class="section-label">10 · <span>BlurredTopBar</span> (홈 스타일)</div>
+            <div class="demo-topbar">
+                <button type="button" class="glass-icon-btn" aria-label="메뉴">☰</button>
+                <span class="title">홈</span>
+                <button type="button" class="glass-icon-btn" aria-label="검색">🔍</button>
+            </div>
+            <p style="margin-top:14px;font-size:11px;color:var(--on-surface-variant);line-height:1.55;">
+                우측은 프로필 아바타가 아니라 메뉴·검색 등 보조 액션 슬롯으로 둡니다(<code>design_system.md</code> — 하단에 프로필 탭 없음).
+            </p>
+        </div>
+
+        <div class="section">
+            <div class="section-label">11 · <span>BottomNavBar</span> — 프로필 탭 없음(3탭)</div>
+            <div class="tabbar-wrap">
+                <div class="tabbar-sralanh">
+                    <button type="button" class="tab-pill active">
+                        <span class="ti">🎓</span>
+                        <span class="tl">수업·레슨</span>
+                    </button>
+                    <button type="button" class="tab-pill" title="사전·어휘(단어장 뉘앙스)">
+                        <span class="ti">📖</span>
+                        <span class="tl">사전·어휘</span>
+                    </button>
+                    <button type="button" class="tab-pill" title="연습·실습(적용)">
+                        <span class="ti">🌐</span>
+                        <span class="tl">연습·실습</span>
+                    </button>
+                </div>
+            </div>
+            <p style="margin-top:14px;font-size:11px;color:var(--on-surface-variant);line-height:1.55;">
+                <code>design_system.md</code>와 동일: <strong>프로필 탭을 두지 않음</strong>. 탭은 수업·레슨 · 사전·어휘 · 연습·실습만.
+            </p>
+        </div>
+
+        <div class="section">
+            <div class="section-label">12 · <span>StudyChrome</span> — 진행 + 힌트 칩</div>
+            <div class="lesson-progress">
+                <div class="lesson-row">
+                    <span>LESSON 01</span>
+                    <span>3 / 12</span>
+                </div>
+                <div class="prog-track" style="height:14px;">
+                    <div class="prog-fill" style="width:25%"></div>
+                </div>
+                <div class="row" style="margin-top:20px;justify-content:center;">
+                    <span class="hint-chip">💡 인사</span>
+                    <span class="hint-chip">✓ Essential Phrase</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-label">13 · <span>ThreeStepPhraseLayout</span> — 3단계 성구</div>
+            <div class="study-card-wrap">
+                <div class="study-card">
+                    <div class="study-cat-icon">👋</div>
+                    <div class="study-body">
+                        <div class="step-label ko">KOREAN</div>
+                        <div class="study-korean">안녕하세요</div>
+                        <div class="study-pron-wrap">
+                            <div class="pron-pill" style="text-align:center;">
+                                <div class="cap">PRONUNCIATION</div>
+                                <div class="body">[ 안녕하세요 ]</div>
+                            </div>
+                        </div>
+                        <div class="step-label km">KHMER</div>
+                        <div class="study-khmer">សួស្តី</div>
+                    </div>
+                </div>
+                <div class="study-fab-pos">
+                    <button type="button" class="primary-fab" aria-label="듣기">🔊</button>
+                </div>
+            </div>
+
+            <div class="study-footer-demo">
+                <div class="footer-prev">
+                    <div class="circle">←</div>
+                    PREVIOUS
+                </div>
+                <div class="footer-dots">
+                    <span class="footer-dot"></span>
+                    <span class="footer-dot on"></span>
+                    <span class="footer-dot"></span>
+                    <span class="footer-dot"></span>
+                </div>
+                <button type="button" class="footer-next">NEXT →</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function setTheme(t, btn) {
+            document.documentElement.setAttribute('data-theme', t === 'dark' ? 'dark' : '');
+            document.querySelectorAll('.toggle-btn').forEach(function (b) { b.classList.remove('active'); });
+            btn.classList.add('active');
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,17 @@
+# Sralanh 프로젝트 개발 규칙
+
+1. 디자인 원칙 및 에셋:
+   - 모든 UI는 @design_system.md 및 @design_system_showcase_final.html을 준수한다.
+   - 폰트는 한국어(Gowun Dodum), 크메르어(Kantumruy Pro)를 사용한다.
+   - 캄보디아어(Khmer) 렌더링: 획이 복잡하므로 국문 대비 폰트 크기를 +2~4px 크게 설정하고, line-height를 최소 1.3 이상 확보한다.
+   - 3단계 성구 레이아웃: [한국어 번역] - [한국어 발음] - [크메르어 원문] 순서를 절대 유지한다.
+
+2. 기능 및 데이터 제약:
+   - 계정(Profile) 기능은 제외하며, 모든 데이터는 기기 로컬 저장소에 보관한다.
+   - 데이터 표준: 모든 JSON과 모델은 { korean, khmer, pronunciation } 키값을 공통으로 사용한다.
+   - 성능 최적화: 성경/기도문 데이터는 `assets/data/`의 분할된 JSON에서 필요 시에만 불러오는 Lazy Loading 방식을 취한다.
+
+3. 코드 스타일 및 아키텍처:
+   - UI 프레임워크: Flutter(Dart) Material 3를 사용한다.
+   - 테마 확장: 기존 `lib/theme/app_theme.dart`를 기반으로 하며, 직접적인 색상 코드 대신 테마의 `colorScheme`을 참조한다.
+   - 상태 관리: 가벼운 Provider 또는 Zustand(Dart 버전) 스타일의 로컬 상태 관리를 지향한다.
