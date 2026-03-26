@@ -16,9 +16,6 @@ class HomeTabScreen extends StatefulWidget {
 }
 
 class _HomeTabScreenState extends State<HomeTabScreen> {
-  static const _lessonImageUrl =
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuAmHK8BcdCd_MyPyK4JJlJ0Hn9UnMOuTTfbI5Vzb57rVlOPWwt3ZdzHpSCUI1v070lCZWH5hhvvQJw7wB-0ebaC0sRBxeC70rcsjb262CV796NJmTeI9pgpRbZxc6VvksqOrq3UB8wKMTg2_JMAu5S7lJmNhX3h0fX-DrWjHhtTfx2ay1XL5S0qE3YFFV81HB5_Bxjf2pWgx1sYObqQtH-QqwX0qcPm-gpmTft89GZngVbLjV62PcHfjsW2lp5RQjX0j9THNiipIXDb';
-
   Phrase? _phraseOfDay;
   List<Phrase> _phrases = [];
   bool _loading = true;
@@ -100,7 +97,7 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
                           24,
                           MediaQuery.paddingOf(context).top + 72,
                           24,
-                          140 + bottomInset,
+                          100 + bottomInset,
                         ),
                         child: ConstrainedBox(
                           constraints: const BoxConstraints(maxWidth: 640),
@@ -116,9 +113,6 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
                                 onStudyStart: () =>
                                     _openPhraseStudy(context),
                               ),
-                              _FeaturedLesson(
-                                imageUrl: _lessonImageUrl,
-                              ),
                             ],
                           ),
                         ),
@@ -130,29 +124,6 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
             right: 0,
             child: BlurredSralanhTopBar(title: '홈'),
           ),
-          if (!_loading && _error == null)
-            Positioned(
-              right: 24,
-              bottom: 128 + bottomInset,
-              child: Material(
-                elevation: 8,
-                shadowColor: Colors.black26,
-                shape: const CircleBorder(),
-                color: AppColors.tertiaryContainer,
-                child: InkWell(
-                  customBorder: const CircleBorder(),
-                  onTap: () {},
-                  child: Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: Icon(
-                      Icons.chat_bubble_outline,
-                      size: 28,
-                      color: AppColors.onTertiaryContainer,
-                    ),
-                  ),
-                ),
-              ),
-            ),
         ],
       ),
     );
@@ -538,101 +509,6 @@ class _SmallActionTile extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class _FeaturedLesson extends StatelessWidget {
-  const _FeaturedLesson({required this.imageUrl});
-
-  final String imageUrl;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      spacing: 24,
-      children: [
-        Text(
-          '추천 레슨',
-          style: GoogleFonts.gowunDodum(
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
-            color: AppColors.onSurface,
-          ),
-        ),
-        Material(
-          color: AppColors.surfaceContainerLow,
-          borderRadius: BorderRadius.circular(24),
-          child: InkWell(
-            borderRadius: BorderRadius.circular(24),
-            onTap: () {},
-            child: Padding(
-              padding: const EdgeInsets.all(24),
-              child: Row(
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(16),
-                    child: SizedBox(
-                      width: 80,
-                      height: 80,
-                      child: Image.network(
-                        imageUrl,
-                        fit: BoxFit.cover,
-                        errorBuilder: (_, _, _) => ColoredBox(
-                          color: AppColors.primaryContainer,
-                          child: Icon(
-                            Icons.storefront_rounded,
-                            color: AppColors.primary,
-                            size: 36,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 24),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      spacing: 4,
-                      children: [
-                        Text(
-                          'នៅផ្សារ',
-                          style: khmerTextStyle(
-                            context: context,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.primary,
-                          ),
-                        ),
-                        Text(
-                          '시장 구경하기',
-                          style: GoogleFonts.notoSansKr(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.onSurface,
-                          ),
-                        ),
-                        Text(
-                          '15개 단어 • 5분',
-                          style: GoogleFonts.notoSansKr(
-                            fontSize: 12,
-                            color: AppColors.onSurfaceVariant,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Icon(
-                    Icons.chevron_right_rounded,
-                    color: AppColors.outlineVariant,
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ],
     );
   }
 }

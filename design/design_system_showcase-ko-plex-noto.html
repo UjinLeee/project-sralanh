@@ -488,47 +488,6 @@
             font-size: 20px;
         }
 
-        .featured-row {
-            max-width: 520px;
-            background: var(--surface-container-low);
-            border-radius: 24px;
-            padding: 24px;
-            display: flex;
-            align-items: center;
-            gap: 24px;
-        }
-
-        .featured-thumb {
-            width: 80px;
-            height: 80px;
-            border-radius: 16px;
-            background: var(--primary-container);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-        }
-
-        .featured-kh {
-            font-family: 'Kantumruy Pro', sans-serif;
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-        .featured-ko {
-            font-family: var(--font-ko-body);
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--on-surface);
-        }
-
-        .featured-meta {
-            font-size: 12px;
-            color: var(--on-surface-variant);
-            margin-top: 4px;
-        }
-
         /* SavedWordsOverview */
         .saved-panel {
             max-width: 520px;
@@ -990,11 +949,6 @@
                     <div class="state-label">볼륨 FAB</div>
                     <button type="button" class="primary-fab" aria-label="재생">🔊</button>
                 </div>
-                <div class="state-col">
-                    <div class="state-label">채팅 FAB (tertiary)</div>
-                    <button type="button" class="primary-fab"
-                        style="background:var(--tertiary-container);color:var(--on-tertiary-container);box-shadow:0 8px 24px rgba(251,170,143,.4);">💬</button>
-                </div>
             </div>
         </div>
 
@@ -1023,7 +977,7 @@
 
         <!-- Molecules -->
         <div class="layer-title">Molecules</div>
-        <div class="layer-sub">PhraseOfDayCard · QuickActionGrid · FeaturedLesson · SavedWordsOverview</div>
+        <div class="layer-sub">PhraseOfDayCard · QuickActionGrid · SavedWordsOverview</div>
 
         <div class="section">
             <div class="section-label">06 · <span>PhraseOfDayCard</span></div>
@@ -1065,20 +1019,7 @@
         </div>
 
         <div class="section">
-            <div class="section-label">08 · <span>FeaturedLessonRow</span></div>
-            <div class="featured-row">
-                <div class="featured-thumb">🏪</div>
-                <div style="flex:1;">
-                    <div class="featured-kh">នៅផ្សារ</div>
-                    <div class="featured-ko">시장 구경하기</div>
-                    <div class="featured-meta">15개 단어 · 5분</div>
-                </div>
-                <span style="color:var(--outline-variant);font-size:22px;">›</span>
-            </div>
-        </div>
-
-        <div class="section">
-            <div class="section-label">09 · <span>SavedWordsOverview</span> — 저장한 단어 모아보기</div>
+            <div class="section-label">08 · <span>SavedWordsOverview</span> — 저장한 단어 모아보기</div>
             <div class="saved-panel">
                 <div class="saved-head">
                     <span class="saved-title">저장한 단어</span>
@@ -1120,7 +1061,7 @@
         <div class="layer-sub">BlurredTopBar · BottomNavBar(3탭·프로필 탭 없음) · StudyChrome · ThreeStepPhraseLayout</div>
 
         <div class="section">
-            <div class="section-label">10 · <span>BlurredTopBar</span> (홈 스타일)</div>
+            <div class="section-label">09 · <span>BlurredTopBar</span> (홈 스타일)</div>
             <div class="demo-topbar">
                 <button type="button" class="glass-icon-btn" aria-label="메뉴">☰</button>
                 <span class="title">홈</span>
@@ -1132,7 +1073,7 @@
         </div>
 
         <div class="section">
-            <div class="section-label">11 · <span>BottomNavBar</span> — 프로필 탭 없음(3탭)</div>
+            <div class="section-label">10 · <span>BottomNavBar</span> — 프로필 탭 없음(3탭)</div>
             <div class="tabbar-wrap">
                 <div class="tabbar-sralanh">
                     <button type="button" class="tab-pill active">
@@ -1155,7 +1096,7 @@
         </div>
 
         <div class="section">
-            <div class="section-label">12 · <span>StudyChrome</span> — 진행 + 힌트 칩</div>
+            <div class="section-label">11 · <span>StudyChrome</span> — 진행 + 힌트 칩</div>
             <div class="lesson-progress">
                 <div class="lesson-row">
                     <span>LESSON 01</span>
@@ -1172,7 +1113,7 @@
         </div>
 
         <div class="section">
-            <div class="section-label">13 · <span>ThreeStepPhraseLayout</span> — 3단계 성구</div>
+            <div class="section-label">12 · <span>ThreeStepPhraseLayout</span> — 3단계 성구</div>
             <div class="study-card-wrap">
                 <div class="study-card">
                     <div class="study-cat-icon">👋</div>

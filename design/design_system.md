@@ -24,7 +24,6 @@
 | **Atom** | `ChipTag` | 홈 오늘의 문장 | `surfaceContainerLow` 캡슐 태그 |
 | **Molecule** | `PhraseOfDayCard` | 홈 | 그라데이션 글로우 + 흰 카드 + 배지 + 크메르/한국어 |
 | **Molecule** | `QuickActionGrid` | 홈 | 메인 CTA 타일 + 보조 2분할 타일 |
-| **Molecule** | `FeaturedLessonRow` | 홈 | 썸네일 + 크메르 제목 + 메타 텍스트 행 |
 | **Molecule** | **`SavedWordsOverview`** | 단어장 탭 | 저장 단어 목록·필터·빈 상태 — [§2.5](#25-molecule-savedwordsoverview--저장한-단어-모아보기) |
 | **Organism** | `BlurredTopBar` | 홈·단어장·예배·학습 | `BackdropFilter` + `glassMint` — 프로필 아바타 대신 검색 등 보조 슬롯 |
 | **Organism** | `BottomNavBar` | 루트 | 상단 라운드 글래스, 틸 선택 필 — **홈 · 단어장 · 예배**(프로필 탭 없음) |
@@ -93,7 +92,7 @@ abstract final class AppColors {
 | `shadowSoft` / `shadowNav` | `#071E27` @ 4~6% | 카드·하단 네비 |
 
 **사용 규칙 (요약)**  
-(기존과 동일: CTA·진행바·발음 pill·채팅 FAB·본문 위계·카드 보더·히어로 글로우.)
+(기존과 동일: CTA·진행바·발음 pill·본문 위계·카드 보더·히어로 글로우.)
 
 ### 2.2 Typography — 폰트 스택 (쇼케이스·앱 정렬)
 
