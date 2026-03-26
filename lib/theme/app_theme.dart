@@ -24,6 +24,27 @@ abstract final class AppColors {
   static const Color outlineVariant = Color(0xFFBEC9C7);
   static const Color primaryFixed = Color(0xFFA4F0E9);
   static const Color secondaryFixed = Color(0xFFFFDBD0);
+
+  /// design_system_showcase_final.html — accent & glass tokens
+  static const Color accentTeal = Color(0xFF0D9488);
+  static const Color titleSlate = Color(0xFF1E293B);
+  static const Color mutedSlate = Color(0xFF64748B);
+  static const Color footerMuted = Color(0xFF6F7977);
+
+  static Color get accentTealSurface =>
+      const Color(0xFFCCFBF1).withValues(alpha: 0.5);
+
+  static Color get accentTealBorder =>
+      const Color(0xFFCCFBF1).withValues(alpha: 0.35);
+
+  static Color get glassMint =>
+      const Color(0xFFF0FDFA).withValues(alpha: 0.82);
+
+  static Color get shadowSoft =>
+      const Color(0xFF071E27).withValues(alpha: 0.04);
+
+  static Color get shadowNav =>
+      const Color(0xFF071E27).withValues(alpha: 0.06);
 }
 
 ThemeData buildAppTheme() {
@@ -48,11 +69,21 @@ ThemeData buildAppTheme() {
     scaffoldBackgroundColor: Colors.white,
   );
 
-  final bodyFont = GoogleFonts.beVietnamProTextTheme(base.textTheme);
-  final headlineFont = GoogleFonts.plusJakartaSansTextTheme(bodyFont);
+  final TextTheme noto = GoogleFonts.notoSansKrTextTheme(base.textTheme);
+  final TextTheme mixed = noto.copyWith(
+    displayLarge: GoogleFonts.gowunDodum(textStyle: noto.displayLarge),
+    displayMedium: GoogleFonts.gowunDodum(textStyle: noto.displayMedium),
+    displaySmall: GoogleFonts.gowunDodum(textStyle: noto.displaySmall),
+    headlineLarge: GoogleFonts.gowunDodum(textStyle: noto.headlineLarge),
+    headlineMedium: GoogleFonts.gowunDodum(textStyle: noto.headlineMedium),
+    headlineSmall: GoogleFonts.gowunDodum(textStyle: noto.headlineSmall),
+    titleLarge: GoogleFonts.gowunDodum(textStyle: noto.titleLarge),
+    titleMedium: GoogleFonts.gowunDodum(textStyle: noto.titleMedium),
+    titleSmall: GoogleFonts.gowunDodum(textStyle: noto.titleSmall),
+  );
 
   return base.copyWith(
-    textTheme: headlineFont.apply(
+    textTheme: mixed.apply(
       bodyColor: AppColors.onSurface,
       displayColor: AppColors.onSurface,
     ),
@@ -61,10 +92,10 @@ ThemeData buildAppTheme() {
       scrolledUnderElevation: 0,
       backgroundColor: Colors.transparent,
       foregroundColor: AppColors.onSurface,
-      titleTextStyle: GoogleFonts.plusJakartaSans(
+      titleTextStyle: GoogleFonts.gowunDodum(
         fontSize: 20,
         fontWeight: FontWeight.bold,
-        color: const Color(0xFF1E293B),
+        color: AppColors.titleSlate,
       ),
     ),
   );
@@ -80,7 +111,7 @@ TextStyle khmerTextStyle({
     fontSize: fontSize,
     fontWeight: fontWeight,
     color: color ?? Theme.of(context).colorScheme.onSurface,
-    height: 1.25,
+    height: 1.3,
   );
 }
 

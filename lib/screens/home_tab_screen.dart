@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,18 +6,16 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:project_sralanh/models/phrase.dart';
 import 'package:project_sralanh/screens/phrase_study_screen.dart';
 import 'package:project_sralanh/theme/app_theme.dart';
+import 'package:project_sralanh/widgets/blurred_sralanh_top_bar.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class HomeTabScreen extends StatefulWidget {
+  const HomeTabScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<HomeTabScreen> createState() => _HomeTabScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
-  static const _profileImageUrl =
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuAcZbV2lM2JH791vk0h2LeBCB2mIivp9w9kyO25iLtbaAOagJhEN1keX19oTsPMLQVDsxfDBx6UfeUpJlYABIqSroQ61np6ta0fmuYTF0ueCqYtZFoBVJVWZ760z83Y_R674CeYPPXZmyA2UhKKopItuUxb6nMjdgTp4IOkIFEWqLq6tivFGGNUs8-20KCC6w9RqHQCLOJbylgNen2mMUWkzykYaq3w4CbOonOdyQdnLxQ0PWW7k3uK-lH0lvQYKbWTTMwnljVMm9ev';
-
+class _HomeTabScreenState extends State<HomeTabScreen> {
   static const _lessonImageUrl =
       'https://lh3.googleusercontent.com/aida-public/AB6AXuAmHK8BcdCd_MyPyK4JJlJ0Hn9UnMOuTTfbI5Vzb57rVlOPWwt3ZdzHpSCUI1v070lCZWH5hhvvQJw7wB-0ebaC0sRBxeC70rcsjb262CV796NJmTeI9pgpRbZxc6VvksqOrq3UB8wKMTg2_JMAu5S7lJmNhX3h0fX-DrWjHhtTfx2ay1XL5S0qE3YFFV81HB5_Bxjf2pWgx1sYObqQtH-QqwX0qcPm-gpmTft89GZngVbLjV62PcHfjsW2lp5RQjX0j9THNiipIXDb';
 
@@ -26,7 +23,6 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Phrase> _phrases = [];
   bool _loading = true;
   String? _error;
-  int _navIndex = 0;
 
   @override
   void initState() {
@@ -93,7 +89,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Text(
                             '문구를 불러오지 못했습니다.\n$_error',
                             textAlign: TextAlign.center,
-                            style: GoogleFonts.beVietnamPro(color: AppColors.onSurface),
+                            style: GoogleFonts.notoSansKr(
+                              color: AppColors.onSurface,
+                            ),
                           ),
                         ),
                       )
@@ -126,23 +124,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
           ),
-          Positioned(
+          const Positioned(
             top: 0,
             left: 0,
             right: 0,
-            child: _BlurredTopBar(
-              profileImageUrl: _profileImageUrl,
-            ),
-          ),
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: _BottomNavBar(
-              selectedIndex: _navIndex,
-              onSelect: (i) => setState(() => _navIndex = i),
-              bottomPadding: bottomInset,
-            ),
+            child: BlurredSralanhTopBar(title: '홈'),
           ),
           if (!_loading && _error == null)
             Positioned(
@@ -173,83 +159,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class _BlurredTopBar extends StatelessWidget {
-  const _BlurredTopBar({required this.profileImageUrl});
-
-  final String profileImageUrl;
-
-  @override
-  Widget build(BuildContext context) {
-    final top = MediaQuery.paddingOf(context).top;
-    return ClipRect(
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-        child: Container(
-          padding: EdgeInsets.only(top: top),
-          decoration: BoxDecoration(
-            color: const Color(0xFFF0FDFA).withValues(alpha: 0.82),
-            boxShadow: [
-              BoxShadow(
-                color: const Color(0xFF071E27).withValues(alpha: 0.06),
-                blurRadius: 40,
-                offset: const Offset(0, 20),
-              ),
-            ],
-          ),
-          child: SizedBox(
-            height: 64,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Row(
-                children: [
-                  IconButton(
-                    style: IconButton.styleFrom(
-                      foregroundColor: const Color(0xFF0D9488),
-                      backgroundColor: const Color(0xFFCCFBF1).withValues(alpha: 0.5),
-                    ),
-                    onPressed: () {},
-                    icon: const Icon(Icons.menu_rounded),
-                  ),
-                  Expanded(
-                    child: Text(
-                      '홈',
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.plusJakartaSans(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: const Color(0xFF1E293B),
-                      ),
-                    ),
-                  ),
-                  Material(
-                    shape: const CircleBorder(),
-                    clipBehavior: Clip.antiAlias,
-                    child: InkWell(
-                      onTap: () {},
-                      child: SizedBox(
-                        width: 40,
-                        height: 40,
-                        child: Image.network(
-                          profileImageUrl,
-                          fit: BoxFit.cover,
-                          errorBuilder: (_, _, _) => Container(
-                            color: AppColors.surfaceContainerLow,
-                            child: const Icon(Icons.person_outline),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
 class _TodayGoalSection extends StatelessWidget {
   const _TodayGoalSection({required this.goalPercent});
 
@@ -268,7 +177,7 @@ class _TodayGoalSection extends StatelessWidget {
           children: [
             Text(
               '오늘의 목표',
-              style: GoogleFonts.plusJakartaSans(
+              style: GoogleFonts.gowunDodum(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
                 color: AppColors.onSurface,
@@ -276,7 +185,7 @@ class _TodayGoalSection extends StatelessWidget {
             ),
             Text(
               '$pct%',
-              style: GoogleFonts.beVietnamPro(
+              style: GoogleFonts.notoSansKr(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
                 color: AppColors.primary,
@@ -299,7 +208,8 @@ class _TodayGoalSection extends StatelessWidget {
                       borderRadius: BorderRadius.circular(999),
                       boxShadow: [
                         BoxShadow(
-                          color: AppColors.primaryContainer.withValues(alpha: 0.45),
+                          color: AppColors.primaryContainer
+                              .withValues(alpha: 0.45),
                           blurRadius: 20,
                         ),
                       ],
@@ -312,7 +222,7 @@ class _TodayGoalSection extends StatelessWidget {
         ),
         Text(
           '조금만 더 힘내세요! 오늘의 학습 완료까지 얼마 남지 않았습니다.',
-          style: GoogleFonts.beVietnamPro(
+          style: GoogleFonts.notoSansKr(
             fontSize: 14,
             fontWeight: FontWeight.w500,
             color: AppColors.onSurfaceVariant,
@@ -364,7 +274,7 @@ class _PhraseOfDayCard extends StatelessWidget {
               ),
               boxShadow: [
                 BoxShadow(
-                  color: const Color(0xFF071E27).withValues(alpha: 0.04),
+                  color: AppColors.shadowSoft,
                   blurRadius: 40,
                   offset: const Offset(0, 20),
                 ),
@@ -390,7 +300,7 @@ class _PhraseOfDayCard extends StatelessWidget {
                         ),
                         child: Text(
                           '오늘의 문장',
-                          style: GoogleFonts.beVietnamPro(
+                          style: GoogleFonts.notoSansKr(
                             fontSize: 11,
                             fontWeight: FontWeight.bold,
                             letterSpacing: 1.2,
@@ -434,7 +344,7 @@ class _PhraseOfDayCard extends StatelessWidget {
                     ),
                     Text(
                       phrase.korean,
-                      style: GoogleFonts.beVietnamPro(
+                      style: GoogleFonts.notoSansKr(
                         fontSize: 20,
                         fontWeight: FontWeight.w500,
                         color: AppColors.onSurfaceVariant,
@@ -474,7 +384,7 @@ class _ChipTag extends StatelessWidget {
       ),
       child: Text(
         label,
-        style: GoogleFonts.beVietnamPro(
+        style: GoogleFonts.notoSansKr(
           fontSize: 12,
           fontWeight: FontWeight.w500,
           color: AppColors.onSurfaceVariant,
@@ -530,7 +440,7 @@ class _QuickActions extends StatelessWidget {
                           ),
                           Text(
                             '학습 시작',
-                            style: GoogleFonts.beVietnamPro(
+                            style: GoogleFonts.notoSansKr(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
@@ -617,7 +527,7 @@ class _SmallActionTile extends StatelessWidget {
                 Expanded(
                   child: Text(
                     label,
-                    style: GoogleFonts.beVietnamPro(
+                    style: GoogleFonts.notoSansKr(
                       fontWeight: FontWeight.bold,
                       color: labelColor,
                     ),
@@ -645,7 +555,7 @@ class _FeaturedLesson extends StatelessWidget {
       children: [
         Text(
           '추천 레슨',
-          style: GoogleFonts.plusJakartaSans(
+          style: GoogleFonts.gowunDodum(
             fontSize: 22,
             fontWeight: FontWeight.bold,
             color: AppColors.onSurface,
@@ -697,7 +607,7 @@ class _FeaturedLesson extends StatelessWidget {
                         ),
                         Text(
                           '시장 구경하기',
-                          style: GoogleFonts.beVietnamPro(
+                          style: GoogleFonts.notoSansKr(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                             color: AppColors.onSurface,
@@ -705,7 +615,7 @@ class _FeaturedLesson extends StatelessWidget {
                         ),
                         Text(
                           '15개 단어 • 5분',
-                          style: GoogleFonts.beVietnamPro(
+                          style: GoogleFonts.notoSansKr(
                             fontSize: 12,
                             color: AppColors.onSurfaceVariant,
                           ),
@@ -723,114 +633,6 @@ class _FeaturedLesson extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-class _BottomNavBar extends StatelessWidget {
-  const _BottomNavBar({
-    required this.selectedIndex,
-    required this.onSelect,
-    required this.bottomPadding,
-  });
-
-  final int selectedIndex;
-  final ValueChanged<int> onSelect;
-  final double bottomPadding;
-
-  static const _items = <({IconData icon, String label})>[
-    (icon: Icons.school_rounded, label: '수업·레슨'),
-    (icon: Icons.menu_book_rounded, label: '사전·어휘(단어장 뉘앙스)'),
-    (icon: Icons.translate_rounded, label: '연습·실습(적용)'),
-    (icon: Icons.person_rounded, label: '프로필'),
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return ClipRect(
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-        child: Container(
-          padding: EdgeInsets.only(
-            left: 16,
-            right: 16,
-            top: 12,
-            bottom: 24 + bottomPadding,
-          ),
-          decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.82),
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(48)),
-            border: Border(
-              top: BorderSide(
-                color: const Color(0xFFCCFBF1).withValues(alpha: 0.35),
-              ),
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: const Color(0xFF071E27).withValues(alpha: 0.06),
-                blurRadius: 30,
-                offset: const Offset(0, -10),
-              ),
-            ],
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: List.generate(_items.length, (i) {
-              final item = _items[i];
-              final selected = i == selectedIndex;
-              return Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 2),
-                  child: Material(
-                    color: selected
-                        ? const Color(0xFF0D9488)
-                        : Colors.transparent,
-                    borderRadius: BorderRadius.circular(999),
-                    child: InkWell(
-                      borderRadius: BorderRadius.circular(999),
-                      onTap: () => onSelect(i),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 10,
-                          horizontal: 4,
-                        ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              item.icon,
-                              size: 24,
-                              color: selected
-                                  ? Colors.white
-                                  : const Color(0xFF64748B),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              item.label,
-                              textAlign: TextAlign.center,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: GoogleFonts.beVietnamPro(
-                                fontSize: 8.5,
-                                fontWeight: FontWeight.w600,
-                                height: 1.15,
-                                letterSpacing: 0.2,
-                                color: selected
-                                    ? Colors.white
-                                    : const Color(0xFF64748B),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              );
-            }),
-          ),
-        ),
-      ),
     );
   }
 }

@@ -78,9 +78,6 @@ class PhraseStudyScreen extends StatefulWidget {
 }
 
 class _PhraseStudyScreenState extends State<PhraseStudyScreen> {
-  static const _profileImageUrl =
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuAfzmmXYTK-QQBGwPxYaA6PD9ostM6ZVkCGKzxt4fknMVQj4tJ65JVG03qRO_clOC3Qt--Rbht7TYj0qfKLNOKDiEYKHO-eqxj_KaIr3znD5aI_0T38Wn9OtJ7fh_j-d5GpvqIUvGSn8en2_cKpSKStY5hfKViEwXr7-IiC1_UDUyZUgvXQNUKPuqsftHOIe-7UzpGukj8xgNNlTKA56Z0AG5Zv5Yq-1tXtamo0lvx37UlUIUIrA6YoYDr1i6B5zvLzQdPk6EdS1r9Z';
-
   late int _index;
 
   @override
@@ -131,7 +128,7 @@ class _PhraseStudyScreenState extends State<PhraseStudyScreen> {
         body: Center(
           child: Text(
             '학습할 문장이 없습니다.',
-            style: GoogleFonts.beVietnamPro(color: AppColors.onSurfaceVariant),
+            style: GoogleFonts.notoSansKr(color: AppColors.onSurfaceVariant),
           ),
         ),
       );
@@ -186,7 +183,6 @@ class _PhraseStudyScreenState extends State<PhraseStudyScreen> {
             right: 0,
             child: _StudyTopBar(
               title: '${phrase.khmer} • ${phrase.korean}',
-              profileImageUrl: _profileImageUrl,
               topPadding: topInset,
             ),
           ),
@@ -213,12 +209,10 @@ class _PhraseStudyScreenState extends State<PhraseStudyScreen> {
 class _StudyTopBar extends StatelessWidget {
   const _StudyTopBar({
     required this.title,
-    required this.profileImageUrl,
     required this.topPadding,
   });
 
   final String title;
-  final String profileImageUrl;
   final double topPadding;
 
   @override
@@ -226,7 +220,6 @@ class _StudyTopBar extends StatelessWidget {
     final r = _StudyResponsive(context);
     final barH = r.sp(52).clamp(48.0, 58.0);
     final hPad = r.horizontalPadding();
-    final avatar = r.sp(38).clamp(32.0, 44.0);
 
     return ClipRect(
       child: BackdropFilter(
@@ -237,7 +230,7 @@ class _StudyTopBar extends StatelessWidget {
             color: Colors.white.withValues(alpha: 0.82),
             border: Border(
               bottom: BorderSide(
-                color: const Color(0xFFCCFBF1).withValues(alpha: 0.35),
+                color: AppColors.accentTealBorder,
               ),
             ),
           ),
@@ -260,7 +253,7 @@ class _StudyTopBar extends StatelessWidget {
                       textAlign: TextAlign.center,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: GoogleFonts.plusJakartaSans(
+                      style: GoogleFonts.gowunDodum(
                         fontSize: (16 * r.scale).clamp(14.0, 19.0),
                         fontWeight: FontWeight.bold,
                         color: AppColors.onSurface,
@@ -268,22 +261,13 @@ class _StudyTopBar extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    width: avatar,
-                    height: avatar,
-                    child: ClipOval(
-                      child: Image.network(
-                        profileImageUrl,
-                        fit: BoxFit.cover,
-                        errorBuilder: (_, _, _) => ColoredBox(
-                          color: AppColors.surfaceContainerLow,
-                          child: Icon(
-                            Icons.person_outline_rounded,
-                            color: AppColors.primary,
-                          ),
-                        ),
-                      ),
+                  IconButton(
+                    style: IconButton.styleFrom(
+                      foregroundColor: AppColors.accentTeal,
+                      backgroundColor: AppColors.accentTealSurface,
                     ),
+                    onPressed: () {},
+                    icon: const Icon(Icons.search_rounded),
                   ),
                 ],
               ),
@@ -324,7 +308,7 @@ class _ProgressHeader extends StatelessWidget {
             children: [
               Text(
                 lessonLabel.toUpperCase(),
-                style: GoogleFonts.plusJakartaSans(
+                style: GoogleFonts.gowunDodum(
                   fontSize: labelFs,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 2,
@@ -333,7 +317,7 @@ class _ProgressHeader extends StatelessWidget {
               ),
               Text(
                 '$current / $total',
-                style: GoogleFonts.plusJakartaSans(
+                style: GoogleFonts.gowunDodum(
                   fontSize: labelFs,
                   fontWeight: FontWeight.bold,
                   color: AppColors.primary,
@@ -464,7 +448,7 @@ class _StudyCard extends StatelessWidget {
                                 children: [
                                   Text(
                                     'KOREAN',
-                                    style: GoogleFonts.beVietnamPro(
+                                    style: GoogleFonts.notoSansKr(
                                       fontSize: labelFs,
                                       fontWeight: FontWeight.bold,
                                       letterSpacing: 2,
@@ -478,7 +462,7 @@ class _StudyCard extends StatelessWidget {
                                     textAlign: TextAlign.center,
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
-                                    style: GoogleFonts.plusJakartaSans(
+                                    style: GoogleFonts.gowunDodum(
                                       fontSize: koreanFs,
                                       fontWeight: FontWeight.bold,
                                       color: AppColors.onSurface,
@@ -514,7 +498,7 @@ class _StudyCard extends StatelessWidget {
                                       children: [
                                         Text(
                                           'PRONUNCIATION',
-                                          style: GoogleFonts.beVietnamPro(
+                                          style: GoogleFonts.notoSansKr(
                                             fontSize: pronCaptionFs,
                                             fontWeight: FontWeight.w600,
                                             letterSpacing: 1.6,
@@ -529,7 +513,7 @@ class _StudyCard extends StatelessWidget {
                                           textAlign: TextAlign.center,
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
-                                          style: GoogleFonts.beVietnamPro(
+                                          style: GoogleFonts.notoSansKr(
                                             fontSize: pronBodyFs,
                                             fontWeight: FontWeight.w800,
                                             color:
@@ -550,7 +534,7 @@ class _StudyCard extends StatelessWidget {
                                 children: [
                                   Text(
                                     'KHMER',
-                                    style: GoogleFonts.beVietnamPro(
+                                    style: GoogleFonts.notoSansKr(
                                       fontSize: labelFs,
                                       fontWeight: FontWeight.bold,
                                       letterSpacing: 2,
@@ -678,7 +662,7 @@ class _HintChip extends StatelessWidget {
           SizedBox(width: r.sp(8)),
           Text(
             label,
-            style: GoogleFonts.beVietnamPro(
+            style: GoogleFonts.notoSansKr(
               fontSize: (13 * r.scale).clamp(11.0, 15.0),
               fontWeight: FontWeight.w600,
               fontStyle: italic ? FontStyle.italic : FontStyle.normal,
@@ -788,7 +772,7 @@ class _StudyFooter extends StatelessWidget {
                             SizedBox(height: r.sp(3)),
                             Text(
                               'PREVIOUS',
-                              style: GoogleFonts.beVietnamPro(
+                              style: GoogleFonts.notoSansKr(
                                 fontSize: (10 * r.scale).clamp(9.0, 12.0),
                                 fontWeight: FontWeight.w500,
                                 letterSpacing: 0.5,
@@ -842,7 +826,7 @@ class _StudyFooter extends StatelessWidget {
                           children: [
                             Text(
                               'NEXT',
-                              style: GoogleFonts.plusJakartaSans(
+                              style: GoogleFonts.gowunDodum(
                                 fontSize: (12 * r.scale).clamp(11.0, 14.0),
                                 fontWeight: FontWeight.bold,
                                 letterSpacing: 1,

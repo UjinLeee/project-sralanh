@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:project_sralanh/screens/home_screen.dart';
+import 'package:project_sralanh/screens/main_shell_screen.dart';
 import 'package:project_sralanh/theme/app_theme.dart';
 
 void main() {
@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       title: 'រៀនភាសាខ្មែរ - Khmer Learning',
       debugShowCheckedModeBanner: false,
       theme: buildAppTheme(),
-      home: const HomeScreen(),
+      home: const MainShellScreen(),
     );
   }
 }
